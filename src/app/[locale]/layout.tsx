@@ -5,6 +5,7 @@ import "@radix-ui/themes/styles.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import Header from "@/components/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,8 +38,11 @@ export default async function RootLayout(
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Theme>
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <Theme appearance="dark">
+          <NextIntlClientProvider>
+            <Header />
+            {children}
+          </NextIntlClientProvider>
         </Theme>
       </body>
     </html>

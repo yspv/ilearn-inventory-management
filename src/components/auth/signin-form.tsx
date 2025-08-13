@@ -6,7 +6,7 @@ export function SignInForm(props: {
   verifyAction: (state: any, formData: FormData) => void;
 }) {
   const { verifyAction } = props;
-  const [_, action, pending] = React.useActionState(verifyAction, undefined);
+  const [, action, pending] = React.useActionState(verifyAction, undefined);
   return (
     <form action={action}>
       <Box mb="5">

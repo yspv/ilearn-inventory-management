@@ -1,5 +1,16 @@
 {
   "SignIn": {
     "title": "Sign In"
+  },
+  "inventory": {
+    "tab": {
+      "items": "Items",
+      "discussion": "Discussion",
+      "settings": "Settings",
+      "customId": "Custom ID",
+      "access": "Access",
+      "fields": "Fields",
+      "stats": "Stats"
+    }
   }
 }

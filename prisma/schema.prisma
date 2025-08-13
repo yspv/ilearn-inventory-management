@@ -16,8 +16,12 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts Account[]
-  sessions Session[]
+  accounts    Account[]
+  sessions    Session[]
+  inventories Inventory[]
+  items       InventoryItem[]
+  likedItems  InventoryItemLike[]
+  comments    InventoryComment[]
 
   @@map("user")
 }
@@ -64,4 +68,114 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_token")
+}
+
+model Category {
+  id          String      @id
+  name        String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  inventories Inventory[]
+
+  @@map("inventory_category")
+}
+
+model Tags {
+  id          Int         @id
+  name        String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  inventories Inventory[]
+}
+
+model Inventory {
+  id          String  @id
+  title       String
+  description String
+  isPrivate   Boolean @default(false)
+  userId      String
+  categoryId  String
+  version     Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy      User                     @relation(fields: [userId], references: [id])
+  category       Category                 @relation(fields: [categoryId], references: [id])
+  fields         InventoryField[]
+  tags           Tags[]
+  items          InventoryItem[]
+  commets        InventoryComment[]
+  customIdFields InventoryCustomIdField[]
+
+  @@map("inventory")
+}
+
+model InventoryCustomIdField {
+  id          String    @id
+  inventoryId String
+  type        String
+  format      String
+  order       Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+
+  @@map("inventory_customidfields")
+}
+
+model InventoryField {
+  id          String   @id
+  title       String
+  description String
+  inventoryId String
+  order       Int
+  required    Boolean  @default(true)
+  isVisible   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  version     Int      @default(0)
+
+  inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+
+  @@map("inventory_field")
+}
+
+model InventoryItem {
+  id          String   @id
+  customId    String
+  inventoryId String
+  userId      String
+  createdBy   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  likesCount  Int      @default(0)
+  version     Int      @default(0)
+
+  inventory Inventory           @relation(fields: [inventoryId], references: [id])
+  likes     InventoryItemLike[]
+
+  @@unique([inventoryId, customId])
+  @@map("inventory_item")
+}
+
+model InventoryItemLike {
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item   InventoryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  date   DateTime      @default(now())
+  userId String
+  itemId String
+
+  @@unique([userId, itemId])
+}
+
+model InventoryComment {
+  id          String   @id
+  userId      String
+  inventoryId String
+  createdAt   DateTime @default(now())
+  content     String
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
 }
