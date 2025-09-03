@@ -1,4 +1,4 @@
-import { procedure, router } from "@/trpc/trpc";
+import { privateProcedure, procedure, router } from "@/trpc/trpc";
 import { createInfiniteQuery } from "@/trpc/utils";
 import { InventoryInputSchema } from "@zenstackhq/runtime/zod/input";
 import {
@@ -14,6 +14,12 @@ export const inventoryRouter = router({
     .query(async (opts) => {
       const { ctx, input } = opts;
       return ctx.prisma.inventory.aggregate(input);
+    }),
+  create: privateProcedure
+    .input(InventoryInputSchema.create)
+    .mutation((opts) => {
+      const { ctx, input } = opts;
+      return ctx.prisma.inventory.create(input);
     }),
   update: procedure
     .input(InventoryInputSchema.update)

@@ -89,9 +89,7 @@ export function Header() {
         style={{ background: "var(--color-background)" }}
       >
         <Flex flexBasis="20%"></Flex>
-        <Flex flexBasis="60%">
-          <Search />
-        </Flex>
+        <Flex flexBasis="60%">{/*<Search />*/}</Flex>
         <Flex justify="end" align="center" flexBasis="20%" gap="4">
           <ThemeChanger />
           {user ? (

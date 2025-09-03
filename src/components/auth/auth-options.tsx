@@ -12,7 +12,10 @@ export function AuthOptions() {
       flexGrow="1"
       gap="4"
     >
-      <Button onClick={() => signIn("google")} variant="outline">
+      <Button
+        onClick={() => signIn("google", { redirectTo: "/" })}
+        variant="outline"
+      >
         <Image
           src="/google-logo.svg"
           height={"20"}
