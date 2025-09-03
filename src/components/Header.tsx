@@ -72,7 +72,7 @@ function Search() {
   );
 }
 
-export default function Header() {
+export function Header() {
   const { data } = useSession();
   const user = data?.user;
   const handleSignOut = async () => {
