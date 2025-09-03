@@ -1,0 +1,66 @@
+.rs__control {
+  background-color: var(--color-surface);
+  border: 1px solid var(--gray-7);
+  border-radius: var(--radius-3);
+  padding: var(--space-3);
+  text-indent: var(--text-field-padding);
+}
+
+.rs__input-container {
+  text-indent: var(--text-field-padding);
+}
+
+.rs__input {
+  text-indent: var(--text-field-padding);
+}
+
+.rs__control--is-focused {
+  background-color: var(--gray-1);
+  border-color: var(--focus-8);
+}
+
+.rs__menu {
+  margin-top: var(--space-2);
+  padding: var(--space-2);
+  gap: var(--space-2);
+  background-color: var(--gray-2);
+  border: 1px solid var(--gray-6);
+  border-radius: 8px;
+}
+
+.rs__menu-list {
+  gap: var(--space-5);
+}
+
+.rs__option {
+  border-radius: var(--radius-1);
+  padding: var(--space-2);
+  background-color: var(--gray-2);
+  color: var(--gray-12);
+}
+
+.rs__option--is-focused {
+  background-color: var(--gray-3);
+}
+
+.rs__option--is-selected {
+  background-color: var(--indigo-10);
+  color: white;
+}
+
+.rs__multi-value {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: var(--space-1) var(--space-2);
+  line-height: var(--line-height-1);
+  background-color: var(--gray-5);
+  border-radius: var(--space-1);
+  margin: var(--space-1);
+  box-sizing: border-box;
+  gap: var(--space-1);
+}
+
+.mdxeditor p {
+  margin: 0 0;
+}

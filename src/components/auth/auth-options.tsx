@@ -1,6 +1,7 @@
 "use client";
 import { Button, Flex } from "@radix-ui/themes";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export function AuthOptions() {
   return (
@@ -12,11 +13,21 @@ export function AuthOptions() {
       gap="4"
     >
       <Button onClick={() => signIn("google")} variant="outline">
-        <img src="/google-logo.svg" height={"20"} width={"20"} />
+        <Image
+          src="/google-logo.svg"
+          height={"20"}
+          width={"20"}
+          alt="google-logo"
+        />
         Sign In with Google
       </Button>
       <Button onClick={() => signIn("facebook")} variant="outline">
-        <img src="/facebook-logo.svg" height={"20"} width={"20"} />
+        <Image
+          src="/facebook-logo.svg"
+          height={"20"}
+          width={"20"}
+          alt="facebook-logo"
+        />
         Sign In with Facebook
       </Button>
     </Flex>

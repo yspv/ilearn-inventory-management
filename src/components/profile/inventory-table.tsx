@@ -1,0 +1,62 @@
+"use client";
+import {
+  ColumnFiltersState,
+  getCoreRowModel,
+  SortingState,
+  Updater,
+  useReactTable,
+} from "@tanstack/react-table";
+import { DataTable } from "../data-table";
+import { Inventory, User } from "@prisma/client";
+import React from "react";
+import { columns } from "./column";
+import { resolveUpdater, sortingToQuery } from "@/utils";
+import { InfiniteScroll } from "../infinite-scroll";
+
+export interface Props {
+  data: (Inventory & { owner: User })[];
+  defaultFilter: "me" | "notMe" | "anyone";
+  onFilterChange(filters: Record<string, any>): void;
+  onSortChange(state: Record<string, string>): void;
+  loadMore(): void;
+}
+
+export function ProfileInventoryTable(props: Props) {
+  const { data, defaultFilter, onFilterChange, onSortChange, loadMore } = props;
+
+  const [filters, setFilters] = React.useState<ColumnFiltersState>([
+    { id: "owner", value: defaultFilter },
+  ]);
+  const [sort, setSort] = React.useState<SortingState>([]);
+
+  function handleFiltersChange(updaterOrValue: Updater<ColumnFiltersState>) {
+    const newState = resolveUpdater(updaterOrValue, filters);
+    setFilters(newState);
+    onFilterChange(newState.map((f) => ({ field: f.id, value: f.value })));
+  }
+
+  function handleSortingChange(updaterOrValue: Updater<SortingState>) {
+    const newState = resolveUpdater(updaterOrValue, sort);
+    setSort(newState);
+    onSortChange(sortingToQuery(newState));
+  }
+
+  const table = useReactTable({
+    columns,
+    data: data || [],
+    getCoreRowModel: getCoreRowModel(),
+    manualFiltering: true,
+    manualSorting: true,
+    onColumnFiltersChange: handleFiltersChange,
+    onSortingChange: handleSortingChange,
+    state: {
+      columnFilters: filters,
+      sorting: sort,
+    },
+  });
+  return (
+    <InfiniteScroll loadMore={loadMore}>
+      <DataTable table={table} />
+    </InfiniteScroll>
+  );
+}

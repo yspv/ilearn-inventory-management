@@ -1,11 +1,8 @@
 "use client";
-
 import React from "react";
-import CustomIdDateTimeField from "./custom-id-datetime-field";
-import { CustomIdFixedField } from "./custom-id-fixed-field";
-import { CustomIdSequencField } from "./custom-id-sequence-field";
-import CustomIdNumberField from "./custom-id-number-field";
-import { Flex } from "@radix-ui/themes";
+import { Button, Flex, Popover, TextField, Tooltip } from "@radix-ui/themes";
+import { Component2Icon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { EmojiPicker } from "@/components/emoji-picker";
 
 export type CustomIdFieldProps = {
   type: string;
@@ -13,22 +10,74 @@ export type CustomIdFieldProps = {
   onChange(e: string): void;
 };
 
-const fields: {
-  [key: string]: (props: CustomIdFieldProps) => React.ReactNode;
-} = {
-  fixed: CustomIdFixedField,
-  datetime: CustomIdDateTimeField,
-  sequence: CustomIdSequencField,
-  "20bit": CustomIdNumberField,
-  "32bit": CustomIdNumberField,
+const fields: Record<string, any> = {
+  fixed: {
+    placeholder: "ITEM-",
+    tooltip: "Fixed item for ",
+  },
+  datetime: {
+    placeholder: "[YYYY/MM/DD]_",
+  },
+  guid: {
+    placeholder: "[G]",
+  },
+  bit32: {
+    placeholder: "[X:5]",
+  },
+  bit20: {
+    plaecholder: "[X:7]",
+  },
+  digit6: {
+    placeholder: "",
+  },
+  digit9: {
+    placeholder: "",
+  },
+  sequence: {
+    placeholder: "[D:5]",
+  },
 };
 
-export function CustomIdField(props: CustomIdFieldProps) {
-  const { type } = props;
-  const Field = fields[type];
+function EmojiPickerPopover(props: { onSelect(emoji: string): void }) {
+  const { onSelect } = props;
   return (
-    <Flex direction={"column"} width="100%">
-      {Field ? Field(props) : null}
+    <Popover.Root>
+      <Popover.Trigger>
+        <Button variant="ghost" color="gray">
+          <Component2Icon />
+        </Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <EmojiPicker onEmojiSelect={(e) => onSelect(e.emoji)} />
+      </Popover.Content>
+    </Popover.Root>
+  );
+}
+
+export function CustomIdField(props: CustomIdFieldProps) {
+  const { type, format, onChange } = props;
+  const field = fields[type];
+  return (
+    <Flex direction="column" width="100%">
+      <TextField.Root
+        value={format}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={field.placeholder}
+        size="3"
+      >
+        <TextField.Slot>
+          <Tooltip content="Fixed item value">
+            <QuestionMarkCircledIcon />
+          </Tooltip>
+        </TextField.Slot>
+        {type === "fixed" && (
+          <TextField.Slot>
+            <EmojiPickerPopover
+              onSelect={(emoji) => onChange(format + emoji)}
+            />
+          </TextField.Slot>
+        )}
+      </TextField.Root>
     </Flex>
   );
 }

@@ -7,6 +7,7 @@ import Nodemailer from "next-auth/providers/nodemailer";
 import { sendMail } from "./mail";
 import VerifyEmail from "@/components/email/verify-email";
 import { render } from "@react-email/render";
+import { User } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -16,7 +17,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Nodemailer({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
+        port: process.env.EMAIL_SERVER_PORT as any,
         auth: {
           user: process.env.EMAIL_SERVER_USER,
           pass: process.env.EMAIL_SERVER_PASSWORD,
@@ -34,4 +35,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    session: ({ session, user }) => {
+      const { isActive, isAdmin, createdAt, updatedAt } = user as User;
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          isActive,
+          isAdmin,
+          createdAt,
+          updatedAt,
+        },
+      };
+    },
+  },
 });

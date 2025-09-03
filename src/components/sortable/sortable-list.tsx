@@ -29,7 +29,7 @@ interface Props<T extends BaseItem> {
   items: T[];
   onChange(items: T[]): void;
   onDelete(id: UniqueIdentifier): void;
-  renderItem(item: T): React.ReactNode;
+  renderItem(item: T, index?: number): React.ReactNode;
 }
 
 const SortableListContext = React.createContext<{ isOutside: boolean }>({
@@ -98,8 +98,10 @@ export function SortableList<T extends BaseItem>(props: Props<T>) {
       <SortableContext items={items}>
         <SortableListContext value={{ isOutside: isOutsideThreshold }}>
           <Flex direction="column" gap="4" style={{ flex: 1 }}>
-            {items.map((item) => (
-              <React.Fragment key={item.id}>{renderItem(item)}</React.Fragment>
+            {items.map((item, i) => (
+              <React.Fragment key={item.id}>
+                {renderItem(item, i)}
+              </React.Fragment>
             ))}
           </Flex>
         </SortableListContext>

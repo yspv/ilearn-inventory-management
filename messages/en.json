@@ -2,6 +2,15 @@
   "SignIn": {
     "title": "Sign In"
   },
+  "auto-save": {
+    "status": {
+      "idle": "No changes",
+      "pending": "Saving...",
+      "success": "All changes saved",
+      "notSaved": "Not Saved",
+      "error": "Error"
+    }
+  },
   "inventory": {
     "tab": {
       "items": "Items",
@@ -11,6 +20,18 @@
       "access": "Access",
       "fields": "Fields",
       "stats": "Stats"
+    },
+    "custom-id": {
+      "errors": {
+        "datetime": "Datetime field must use following format: [YYYY-MM-DD], [YYYY-MM], or [YYYY]",
+        "fixed": "Fixed field must use at least one character.",
+        "guid": "GUID field must use format [G]",
+        "bit32": "32-Bit field must use following format: decimal [D:10] or hex [X:8]",
+        "bit20": "20-Bit field must use following format: decimal [D:7] or hex [X:5]",
+        "digit6": "6-Digit field must use following format [D] or [D:N]. N is leading zeros.",
+        "digit9": "9-Digit field must use following format [D] or [D:N]. N is leading zeros.",
+        "sequence": "Sequence field must use following format [D] or [D:N]. N is leading zeros."
+      }
     }
   }
 }

@@ -18,20 +18,17 @@ const datetimeBlocks: { [key: string]: any } = {
     from: 1,
     to: 31,
   },
-  D: {
-    mask: /^\d+$/,
-  },
 };
 
 function formatDigits(format: string) {
   return format.replace(/\[D:(\d+)\]/, (_, n) =>
-    new Array(+n).fill(0).join(""),
+    new Array(+n).fill("0").join(""),
   );
 }
 
 function formatHex(format: string) {
   return format.replace(/\[X:(\d+)\]/, (_, n) =>
-    new Array(+n).fill("X").join(""),
+    new Array(+n).fill("*").join(""),
   );
 }
 
@@ -47,15 +44,10 @@ export function CustomIdInput(props: {
     lazy: false,
     mask: formatHex(formatDigits(format)),
     blocks: datetimeBlocks,
-    definitions: {
-      X: {
-        mask: /[0-9a-fA-F]/,
-      },
-    },
   });
   return (
     <>
-      <TextField.Root ref={ref} size="3" />
+      <TextField.Root ref={ref as any} size="3" />
     </>
   );
 }

@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+plugin zod {
+  provider = "@core/zod"
+}
+
 abstract model Base {
   createdAt DateTime @default(now()) @map('created_at')
   updatedAt DateTime @updatedAt @map('updated_at')
@@ -30,8 +34,8 @@ model User {
   items          InventoryItem[]
   likes          InventoryItemLike[]
   comments       InventoryComment[]
-  
-  @@allow('read', auth() == this)
+
+  @@allow('read', true)
   @@allow('all', auth().isAdmin && auth().isActive)
   @@map("user")
 }
@@ -69,7 +73,7 @@ model Session {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@map("user_session")
 }
 
@@ -84,10 +88,11 @@ model VerificationToken {
 
 model Tag extends Base {
  id   BigInt @id @default(autoincrement())
- name String
+ name String @unique
  inventories Inventory[]
 
- @@allow('create', auth().isActive)
+ @@allow('read', true)
+ @@allow('create,update', auth().isActive)
  @@allow('all', auth().isAdmin && auth().isActive)
 
  @@map('tag')
@@ -108,10 +113,11 @@ model Inventory extends Base {
   tags           Tag[]
   items          InventoryItem[]
   members        InventoryUser[]
-  templates      InventoryTemplate[]
+  fields         InventoryField[]
   comments       InventoryComment[]
   customIdFields CustomIdField[]
 
+  @@allow('read', true)
   @@allow('all',  auth() == owner && auth().isActive)
   @@allow('all',  auth().isAdmin && auth().isActive)
 
@@ -124,21 +130,22 @@ model InventoryUser {
   inventoryId String    @map('inventory_id')
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
-  
+
   @@unique([inventoryId, userId])
 
+  @@allow('read', true)
   @@allow('all', auth().isAdmin && auth().isActive)
   @@allow('all', inventory.owner == auth() && auth().isActive)
-
   @@map('inventory_user')
 }
 
 model Category extends Base {
   id  BigInt @id @default(autoincrement())
-  name String
+  name String @unique
 
   inventories Inventory[]
 
+  @@allow('read', true)
   @@allow('create', auth().isActive)
   @@allow('all', auth().isAdmin && auth().isActive)
 
@@ -148,8 +155,9 @@ model Category extends Base {
 model CustomIdField extends Base {
   id          String   @id @default(cuid())
   type        String
-  format      String 
-  inventoryId String  @map('inventory_id')  
+  format      String
+  order       Int     @default(1)
+  inventoryId String  @map('inventory_id')
   version     Int     @default(1)
 
   inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
@@ -160,35 +168,21 @@ model CustomIdField extends Base {
   @@map('inventory_customidfield')
 }
 
-model InventoryTemplate extends Base {
-  id          BigInt    @id @default(autoincrement())
-  inventoryId String @map('inventory_id')
-
-  inventory   Inventory  @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
-
-  fields      InventoryField[]
-  items       InventoryItem[]
-
-  @@allow('all', auth() == inventory.owner && auth().isActive)
-  @@allow('all', auth().isAdmin && auth().isActive)
-
-  @@map('inventory_template')
-}
-
 model InventoryField extends Base {
-  id          String   @id 
+  id          String   @id @default(cuid())
   title       String
   description String
-  templateId  BigInt
+  inventoryId String
   type        String
   slot        Int      @default(1)
   orderIndex  Int
   required    Boolean  @default(false)
   isVisible   Boolean  @default(true)
 
-  template    InventoryTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
 
-  @@allow('all', auth() == template.inventory.owner && auth().isActive)
+  @@allow('read', true)
+  @@allow('all', auth() == inventory.owner && auth().isActive)
   @@allow('all', auth().isAdmin && auth().isActive)
 
   @@map('inventory_field')
@@ -198,7 +192,6 @@ model InventoryItem extends Base {
   id          String  @id @default(cuid())
   customId    String  @map('custom_id')
   ownerId     String  @map('owner_id')
-  templateId  BigInt     @map('template_id')
   inventoryId String  @map('inventory_id')
   string1     String?
   string2     String?
@@ -215,16 +208,17 @@ model InventoryItem extends Base {
   num1        Int?
   num2        Int?
   num3        Int?
+  sequnce     Int     @default(0)
   version     Int     @default(1)
 
   owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
-  template    InventoryTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
 
   likes       InventoryItemLike[]
 
   @@unique([inventoryId, customId])
 
+  @@allow('read', true)
   @@allow('all', auth() == inventory.owner && auth().isActive)
   @@allow('all', auth() == owner && auth().isActive)
   @@allow('all', auth().isAdmin && auth().isActive)
@@ -237,7 +231,7 @@ model InventoryItemLike {
   date   DateTime @default(now())
   userId String   @map('user_id')
   itemId String   @map('item_id')
-  
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   item InventoryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
@@ -255,6 +249,7 @@ model InventoryComment extends Base {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
 
+  @@allow('read', true)
   @@allow('create', auth().isActive)
   @@allow('all', auth().isAdmin && auth().isActive)
   @@allow('all', auth() == inventory.owner)

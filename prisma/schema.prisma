@@ -79,28 +79,28 @@ model Tag {
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @updatedAt() @map("updated_at")
   id          BigInt      @id() @default(autoincrement())
-  name        String
+  name        String      @unique()
   inventories Inventory[]
 
   @@map("tag")
 }
 
 model Inventory {
-  createdAt      DateTime            @default(now()) @map("created_at")
-  updatedAt      DateTime            @updatedAt() @map("updated_at")
-  id             String              @id() @default(cuid())
+  createdAt      DateTime           @default(now()) @map("created_at")
+  updatedAt      DateTime           @updatedAt() @map("updated_at")
+  id             String             @id() @default(cuid())
   title          String
   description    String
-  ownerId        String              @map("owner_id")
-  categoryId     BigInt              @map("category_id")
-  isPrivate      Boolean             @default(false) @map("is_private")
-  version        Int                 @default(1)
-  owner          User                @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  category       Category            @relation(fields: [categoryId], references: [id])
+  ownerId        String             @map("owner_id")
+  categoryId     BigInt             @map("category_id")
+  isPrivate      Boolean            @default(false) @map("is_private")
+  version        Int                @default(1)
+  owner          User               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  category       Category           @relation(fields: [categoryId], references: [id])
   tags           Tag[]
   items          InventoryItem[]
   members        InventoryUser[]
-  templates      InventoryTemplate[]
+  fields         InventoryField[]
   comments       InventoryComment[]
   customIdFields CustomIdField[]
 
@@ -122,7 +122,7 @@ model Category {
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @updatedAt() @map("updated_at")
   id          BigInt      @id() @default(autoincrement())
-  name        String
+  name        String      @unique()
   inventories Inventory[]
 
   @@map("category")
@@ -134,6 +134,7 @@ model CustomIdField {
   id          String    @id() @default(cuid())
   type        String
   format      String
+  order       Int       @default(1)
   inventoryId String    @map("inventory_id")
   version     Int       @default(1)
   inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
@@ -141,31 +142,19 @@ model CustomIdField {
   @@map("inventory_customidfield")
 }
 
-model InventoryTemplate {
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt() @map("updated_at")
-  id          BigInt           @id() @default(autoincrement())
-  inventoryId String           @map("inventory_id")
-  inventory   Inventory        @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
-  fields      InventoryField[]
-  items       InventoryItem[]
-
-  @@map("inventory_template")
-}
-
 model InventoryField {
-  createdAt   DateTime          @default(now()) @map("created_at")
-  updatedAt   DateTime          @updatedAt() @map("updated_at")
-  id          String            @id()
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt() @map("updated_at")
+  id          String    @id() @default(cuid())
   title       String
   description String
-  templateId  BigInt
+  inventoryId String
   type        String
-  slot        Int               @default(1)
+  slot        Int       @default(1)
   orderIndex  Int
-  required    Boolean           @default(false)
-  isVisible   Boolean           @default(true)
-  template    InventoryTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  required    Boolean   @default(false)
+  isVisible   Boolean   @default(true)
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
 
   @@map("inventory_field")
 }
@@ -176,7 +165,6 @@ model InventoryItem {
   id          String              @id() @default(cuid())
   customId    String              @map("custom_id")
   ownerId     String              @map("owner_id")
-  templateId  BigInt              @map("template_id")
   inventoryId String              @map("inventory_id")
   string1     String?
   string2     String?
@@ -193,10 +181,10 @@ model InventoryItem {
   num1        Int?
   num2        Int?
   num3        Int?
+  sequnce     Int                 @default(0)
   version     Int                 @default(1)
   owner       User                @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   inventory   Inventory           @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
-  template    InventoryTemplate   @relation(fields: [templateId], references: [id], onDelete: Cascade)
   likes       InventoryItemLike[]
 
   @@unique([inventoryId, customId])
