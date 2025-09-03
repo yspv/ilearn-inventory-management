@@ -12,6 +12,14 @@
     }
   },
   "inventory": {
+    "main": {
+      "title": "Title",
+      "description": "Description",
+      "category": "Category",
+      "owner": "Owner",
+      "isPrivate": "Private",
+      "link": "Link"
+    },
     "tab": {
       "items": "Items",
       "discussion": "Discussion",
