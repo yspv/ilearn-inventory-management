@@ -1,4 +1,4 @@
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
 import { Box } from "@radix-ui/themes";
 import React from "react";
 
