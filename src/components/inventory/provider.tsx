@@ -9,6 +9,7 @@ type InventoryContextType = {
   inventory: Inventory;
   isOwner: boolean;
   isAdmin: boolean;
+  refetch(): void;
   update(data: any): void;
 };
 const InventoryContext = React.createContext<InventoryContextType | null>(null);
@@ -20,7 +21,11 @@ export function InventoryProvider(
   const { data } = useSession();
   const trpcUtils = trpc.useUtils();
 
-  const { data: inventory, isLoading } = trpc.inventory.findUnique.useQuery({
+  const {
+    data: inventory,
+    isLoading,
+    refetch,
+  } = trpc.inventory.findUnique.useQuery({
     where: { id },
   });
 
@@ -39,6 +44,7 @@ export function InventoryProvider(
   return (
     <InventoryContext.Provider
       value={{
+        refetch,
         inventory,
         update,
         isAdmin: !!data?.user.isAdmin,

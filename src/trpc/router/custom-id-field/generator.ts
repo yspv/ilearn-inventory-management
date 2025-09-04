@@ -108,6 +108,9 @@ export class Generator {
   }
 
   generate(fields: CustomIdField[]) {
+    if (!fields.length) {
+      return this.generators[CustomIdType.SEQUENCE].generate();
+    }
     return fields.reduce((id, field) => {
       const generator = this.generators[field.type];
       if (!generator) return id;

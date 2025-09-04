@@ -11,6 +11,12 @@
       "error": "Error"
     }
   },
+  "errors": {
+    "CONFLICT": {
+      "title": "Version Conflict",
+      "description": "Someone else updated this item. Your changes weren’t saved. Please try again."
+    }
+  },
   "inventory": {
     "main": {
       "title": "Title",
@@ -30,7 +36,20 @@
       "stats": "Stats"
     },
     "custom-id": {
+      "add-element": "Add Element",
+      "tooltips": {
+        "datetime": "Enter the date in one of these formats: [YYYY-MM-DD], [YYYY-MM], or [YYYY].",
+        "fixed": "This field must contain at least one character.",
+        "guid": "Globally unique identifier (GUID) in the standard [G] format.",
+        "bit32": "This can be a 10-digit decimal ([D:10]) or an 8-digit hexadecimal ([X:8]).",
+        "bit20": "This can be a 7-digit decimal [D:7] or a 5-digit hexadecimal [X:5].",
+        "digit9": "You can use [D] or [D:N], where N represents the total number of digits, including leading zeros.",
+        "digit6": "You can use [D] or [D:N], where N represents the total number of digits, including leading zeros.",
+        "sequence": "You can use [D] or [D:N], where N represents the total number of digits, including leading zeros."
+      },
       "errors": {
+        "field-limit": "The number of fields is exhausted",
+        "unique-error": "Least one field should contain unique type: GUID, SEQUNCE, BIT32, BIT20, DIGIT6, DIGIT9",
         "datetime": "Datetime field must use following format: [YYYY-MM-DD], [YYYY-MM], or [YYYY]",
         "fixed": "Fixed field must use at least one character.",
         "guid": "GUID field must use format [G]",

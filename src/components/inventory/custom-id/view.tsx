@@ -5,7 +5,7 @@ import { CustomIdFieldSelect } from "./custom-id-select";
 import { CustomIdField } from "./custom-id-field";
 import { useList } from "@siberiacancode/reactuse";
 import React from "react";
-import { schema } from "@/trpc/router/custom-id-field/schema";
+import { CustomIdReorderSchema } from "@/trpc/router/custom-id-field/schema";
 import { useAutoSave } from "@/components/auto-save/provider";
 import { SafeParseReturnType } from "zod";
 import { useTranslations } from "next-intl";
@@ -14,16 +14,18 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 interface Props {
   example?: string;
   fields: {
+    id: string;
     type: string;
     format: string;
     order: number;
   }[];
-  onSave(value: any): Promise<void>;
+  onSave(value: any): Promise<unknown>;
 }
 
 export function InventoryCustomIdView(props: Props) {
   const { example, fields, onSave } = props;
-  const t = useTranslations("inventory.custom-id.errors");
+  const t = useTranslations("inventory.custom-id");
+  const errorMessage = useTranslations("inventory.custom-id.errors");
   const [errors, setErrors] = React.useState<SafeParseReturnType<any, any>>();
 
   const { value, set, push } = useList(
@@ -35,13 +37,23 @@ export function InventoryCustomIdView(props: Props) {
   }
 
   function validation() {
-    const error = schema.safeParse(value);
+    const error = CustomIdReorderSchema.safeParse(value);
     setErrors(error);
     return error.success;
   }
 
   function handleOnChange(item: any, format: string) {
     set((prev) => prev.map((p) => (p.id === item.id ? { ...p, format } : p)));
+  }
+
+  function handleDelete(id: number) {
+    set((prev) => prev.filter((p) => p.id !== id));
+  }
+
+  function handleAdd() {
+    const order = value.length + 1;
+    if (value.length === 10) return;
+    push({ id: order, type: "fixed", format: "", order });
   }
 
   useAutoSave(value, handleSave, 5000, validation);
@@ -53,7 +65,7 @@ export function InventoryCustomIdView(props: Props) {
           <Callout.Icon>
             <InfoCircledIcon />
           </Callout.Icon>
-          <Callout.Text>{t(err.message)}</Callout.Text>
+          <Callout.Text>{errorMessage(err.message)}</Callout.Text>
         </Callout.Root>
       ))}
       <Heading size="4">Example: {example}</Heading>
@@ -62,9 +74,7 @@ export function InventoryCustomIdView(props: Props) {
           <SortableList
             items={value}
             onChange={set}
-            onDelete={(id) => {
-              set((prev) => prev.filter((p) => p.id !== id));
-            }}
+            onDelete={handleDelete}
             renderItem={(item) => (
               <SortableList.Item id={item.id}>
                 <Grid flexGrow="1" gap="3">
@@ -99,14 +109,8 @@ export function InventoryCustomIdView(props: Props) {
               </SortableList.Item>
             )}
           />
-          <Button
-            onClick={() => {
-              const order = value.length + 1;
-              push({ id: order, type: "fixed", format: "", order });
-            }}
-            style={{ width: "fit-content" }}
-          >
-            Add Element
+          <Button onClick={handleAdd} style={{ width: "fit-content" }}>
+            {t("add-element")}
           </Button>
         </Flex>
       </Grid>

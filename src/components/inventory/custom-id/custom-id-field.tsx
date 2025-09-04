@@ -3,6 +3,7 @@ import React from "react";
 import { Button, Flex, Popover, TextField, Tooltip } from "@radix-ui/themes";
 import { Component2Icon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { EmojiPicker } from "@/components/emoji-picker";
+import { useTranslations } from "next-intl";
 
 export type CustomIdFieldProps = {
   type: string;
@@ -13,7 +14,6 @@ export type CustomIdFieldProps = {
 const fields: Record<string, any> = {
   fixed: {
     placeholder: "ITEM-",
-    tooltip: "Fixed item for ",
   },
   datetime: {
     placeholder: "[YYYY/MM/DD]_",
@@ -56,6 +56,7 @@ function EmojiPickerPopover(props: { onSelect(emoji: string): void }) {
 
 export function CustomIdField(props: CustomIdFieldProps) {
   const { type, format, onChange } = props;
+  const t = useTranslations("inventory.custom-id.tooltips");
   const field = fields[type];
   return (
     <Flex direction="column" width="100%">
@@ -66,7 +67,7 @@ export function CustomIdField(props: CustomIdFieldProps) {
         size="3"
       >
         <TextField.Slot>
-          <Tooltip content="Fixed item value">
+          <Tooltip content={t(type)}>
             <QuestionMarkCircledIcon />
           </Tooltip>
         </TextField.Slot>

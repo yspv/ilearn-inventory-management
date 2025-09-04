@@ -46,7 +46,7 @@ export function SortableItem(props: PropsWithChildren<Props>) {
   );
 
   const style: CSSProperties = {
-    touchAction: 'none',
+    touchAction: "none",
     opacity: isDragging && !isOutside ? 0.4 : undefined,
     transform: CSS.Translate.toString(transform),
     transition,

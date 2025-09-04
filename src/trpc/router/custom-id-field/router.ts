@@ -1,6 +1,8 @@
 import { procedure, router } from "@/trpc/trpc";
 import { z } from "zod";
 import { Generator } from "./generator";
+import { lockInventory } from "../inventory/utils";
+import { CustomIdReorderSchema } from "./schema";
 
 export const customIdFieldRouter = router({
   findManyByInventoryId: procedure
@@ -8,31 +10,35 @@ export const customIdFieldRouter = router({
     .query(async (opts) => {
       const { ctx, input } = opts;
       const generator = new Generator(10);
-      const fields = await ctx.prisma.customIdField.findMany({
-        where: { inventoryId: input.id },
+      const inventory = await ctx.prisma.inventory.findUnique({
+        where: { id: input.id },
+        include: { customIdFields: true },
       });
+      if (!inventory) return;
+      const fields = inventory.customIdFields;
       return {
         id: generator.generate(fields.sort((a, b) => a.order - b.order)),
+        version: inventory?.version,
         fields,
       };
     }),
-  update: procedure
+  reorder: procedure
     .input(
       z.object({
         id: z.string(),
-        fields: z.array(
-          z.object({
-            type: z.string(),
-            format: z.string(),
-            order: z.number(),
-          }),
-        ),
+        version: z.number(),
+        fields: CustomIdReorderSchema,
       }),
     )
     .mutation(async (opts) => {
       const { ctx, input } = opts;
       const generator = new Generator(10);
       return ctx.prisma.$transaction(async (tx) => {
+        const version = await lockInventory({
+          tx: tx as any,
+          id: input.id,
+          version: input.version,
+        });
         await tx.customIdField.deleteMany({ where: { inventoryId: input.id } });
         const fields = await tx.customIdField.createManyAndReturn({
           data: input.fields.map((f) => ({ ...f, inventoryId: input.id })),
@@ -40,6 +46,7 @@ export const customIdFieldRouter = router({
         return {
           id: generator.generate(fields.sort((a, b) => a.order - b.order)),
           fields,
+          version,
         };
       });
     }),
