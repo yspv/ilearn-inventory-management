@@ -23,5 +23,10 @@ export default function Page() {
   if (isLoading) {
     return <>Loading...</>;
   }
-  return <InventoryItemCreateView fields={fields || []} onSave={createItem} />;
+  return (
+    <InventoryItemCreateView
+      fields={fields?.fields || []}
+      onSave={createItem}
+    />
+  );
 }

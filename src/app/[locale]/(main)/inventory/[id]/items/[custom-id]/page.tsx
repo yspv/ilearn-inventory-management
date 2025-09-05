@@ -39,7 +39,7 @@ export default function Page() {
     <InventoryItemsItemView
       item={item!}
       owner={item!.owner}
-      fields={fields?.sort((a, b) => a.orderIndex - b.orderIndex) || []}
+      fields={fields?.fields.sort((a, b) => a.orderIndex - b.orderIndex) || []}
       onSave={handleSave}
     />
   );

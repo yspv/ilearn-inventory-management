@@ -2,6 +2,7 @@
 import { useAutoSave } from "@/components/auto-save/provider";
 import { InventoryAccessView } from "@/components/inventory/access/view";
 import { useInventory } from "@/components/inventory/provider";
+import { Loader } from "@/components/loader";
 import { trpc } from "@/lib/trpc";
 import { AppRouterInput } from "@/trpc/router/_app";
 import { UserHit } from "@/types/typesense";
@@ -70,7 +71,7 @@ export default function Page() {
   useAutoSave(changes, handleChanges, 5000);
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <Loader />;
   }
 
   return (
