@@ -22,7 +22,7 @@ export default function Page() {
   return (
     <InventoryItemsView
       inventory={inventory}
-      fields={fields || []}
+      fields={fields?.fields || []}
       items={items?.pages.flatMap((i) => i.items) || []}
       onLoadMore={fetchNextPage}
     />

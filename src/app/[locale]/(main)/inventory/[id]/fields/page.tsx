@@ -1,31 +1,59 @@
 "use client";
 import { InventoryFieldsView } from "@/components/inventory/fields/view";
+import { useInventory } from "@/components/inventory/provider";
+import { Loader } from "@/components/loader";
+import { useErrorToaster } from "@/hooks/use-error-toaster";
 import { trpc } from "@/lib/trpc";
-import { Text } from "@radix-ui/themes";
-import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { notFound } from "next/navigation";
 
 export default function Page() {
-  const params = useParams<{ id: string }>();
+  const t = useTranslations("labels");
+  const { inventory } = useInventory();
+  const trpcUtils = trpc.useUtils();
+  const { data, isLoading, isFetching, refetch } =
+    trpc.inventoryField.findManyByInventoryId.useQuery({
+      id: inventory.id,
+    });
 
-  const { data: fields, isLoading } =
-    trpc.inventoryField.findManyByInventoryId.useQuery(
-      {
-        id: params!.id,
-      },
-      { enabled: !!params },
-    );
+  const errorToast = useErrorToaster({
+    CONFLICT: {
+      label: t("reload"),
+      action: refetch,
+    },
+  });
 
-  const { mutateAsync } = trpc.inventoryField.manage.useMutation();
+  const { mutateAsync } = trpc.inventoryField.manage.useMutation({
+    onSuccess: (data) => {
+      trpcUtils.inventoryField.findManyByInventoryId.setData(
+        {
+          id: inventory.id,
+        },
+        (prev) => (prev ? { ...prev, version: data.version } : prev),
+      );
+    },
+    onError: ({ data }) => {
+      errorToast(data?.code);
+    },
+  });
 
-  if (isLoading) {
-    return <Text>Loading</Text>;
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
+
+  if (!data) {
+    notFound();
   }
 
   return (
     <InventoryFieldsView
-      fields={fields || []}
+      fields={data?.fields || []}
       onSave={async (fields) => {
-        await mutateAsync({ id: params!.id, fields });
+        await mutateAsync({
+          id: inventory.id,
+          version: data.version,
+          fields,
+        });
       }}
     />
   );
