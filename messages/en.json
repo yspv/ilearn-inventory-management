@@ -11,10 +11,17 @@
       "error": "Error"
     }
   },
+  "labels": {
+    "reload": "Reload"
+  },
   "errors": {
     "CONFLICT": {
       "title": "Version Conflict",
       "description": "Someone else updated this item. Your changes weren’t saved. Please try again."
+    },
+    "ERROR": {
+      "title": "Something went wrong",
+      "description": "Please try again if you see it again contact with support"
     }
   },
   "inventory": {

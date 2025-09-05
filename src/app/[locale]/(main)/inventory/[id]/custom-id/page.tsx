@@ -1,18 +1,25 @@
 "use client";
-import { Text } from "@radix-ui/themes";
-import React from "react";
 import { trpc } from "@/lib/trpc";
 import { InventoryCustomIdView } from "@/components/inventory/custom-id/view";
 import { useInventory } from "@/components/inventory/provider";
 import { useErrorToaster } from "@/hooks/use-error-toaster";
 import { notFound } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Loader } from "@/components/loader";
 
 export default function Page() {
-  const errorToast = useErrorToaster();
   const { inventory } = useInventory();
+
   const trpcUtils = trpc.useUtils();
+  const t = useTranslations("labels");
+
   const { data, isLoading, isFetching, refetch } =
     trpc.customIdField.findManyByInventoryId.useQuery({ id: inventory.id });
+
+  const errorToast = useErrorToaster({
+    CONFLICT: { label: t("reload"), action: refetch },
+  });
+
   const { mutateAsync } = trpc.customIdField.reorder.useMutation({
     onSuccess: (data) => {
       trpcUtils.customIdField.findManyByInventoryId.setData(
@@ -21,13 +28,12 @@ export default function Page() {
       );
     },
     onError: ({ data }) => {
-      errorToast(data!.code);
-      refetch();
+      errorToast(data?.code);
     },
   });
 
   if (isLoading || isFetching) {
-    return <Text>Loading</Text>;
+    return <Loader />;
   }
 
   if (!data) {
