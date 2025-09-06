@@ -1,13 +1,16 @@
 import { privateProcedure, procedure, router } from "@/trpc/trpc";
-import { createInfiniteQuery } from "@/trpc/utils";
+import { createInfiniteQuery, checkPrismaError } from "@/trpc/utils";
 import { InventoryItemInputSchema } from "@zenstackhq/runtime/zod/input";
 import {
   InventoryItemOrderByRelationAggregateInputObjectSchema,
+  InventoryItemUpdateInputObjectSchema,
   InventoryItemWhereInputObjectSchema,
 } from "@zenstackhq/runtime/zod/objects";
 import { z } from "zod";
 import { Generator } from "../custom-id-field/generator";
 import { ItemInput } from "./schema";
+import { lockItem } from "./utils";
+import { lockInventory } from "../inventory/utils";
 
 export const inventoryItemRouter = router({
   groupBy: procedure.input(InventoryItemInputSchema.groupBy).query((opts) => {
@@ -51,10 +54,40 @@ export const inventoryItemRouter = router({
       });
     }),
   update: procedure
-    .input(InventoryItemInputSchema.update)
+    .input(
+      z.object({
+        id: z.string(),
+        version: z.number(),
+        inventoryVersion: z.number(),
+        data: InventoryItemUpdateInputObjectSchema,
+      }),
+    )
     .mutation(async (opts) => {
       const { ctx, input } = opts;
-      return ctx.prisma.inventoryItem.update(input);
+
+      const item = await checkPrismaError(
+        ctx.prisma.inventoryItem.findUniqueOrThrow({
+          where: { id: input.id },
+          include: { inventory: { select: { id: true } } },
+        }),
+      );
+
+      return ctx.prisma.$transaction(async (tx) => {
+        await lockInventory({
+          tx: tx as any,
+          id: item.inventory.id,
+          version: input.inventoryVersion,
+        });
+        await lockItem({
+          tx: tx as any,
+          id: input.id,
+          version: input.version,
+        });
+        return tx.inventoryItem.update({
+          where: { id: input.id },
+          data: { ...input.data, version: undefined },
+        });
+      });
     }),
   findUnique: procedure
     .input(InventoryItemInputSchema.findUnique)
