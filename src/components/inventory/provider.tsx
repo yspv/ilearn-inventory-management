@@ -1,12 +1,15 @@
 "use client";
 import { trpc } from "@/lib/trpc";
-import { Inventory } from "@prisma/client";
+import { Category, Inventory, Tag } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { notFound } from "next/navigation";
 import React from "react";
+import { Loader } from "../loader";
 
 type InventoryContextType = {
   inventory: Inventory;
+  category: Category;
+  tags: Tag[];
   isOwner: boolean;
   isAdmin: boolean;
   refetch(): void;
@@ -24,17 +27,21 @@ export function InventoryProvider(
   const {
     data: inventory,
     isLoading,
+    isFetching,
     refetch,
-  } = trpc.inventory.findUnique.useQuery({
+  } = trpc.inventory.findUnique.useQuery<
+    Inventory & { tags: Tag[]; category: Category }
+  >({
     where: { id },
+    include: { tags: true, category: true },
   });
 
   function update(data: any) {
     trpcUtils.inventory.findUnique.setData({ where: { id } }, data);
   }
 
-  if (isLoading) {
-    return <>Loading...</>;
+  if (isLoading || isFetching) {
+    return <Loader />;
   }
 
   if (!inventory) {
@@ -44,6 +51,8 @@ export function InventoryProvider(
   return (
     <InventoryContext.Provider
       value={{
+        tags: inventory.tags,
+        category: inventory.category,
         refetch,
         inventory,
         update,
