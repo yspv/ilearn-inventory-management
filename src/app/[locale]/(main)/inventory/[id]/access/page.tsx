@@ -1,16 +1,18 @@
 "use client";
-import { useAutoSave } from "@/components/auto-save/provider";
+import { useSaveWithStatus } from "@/components/auto-save/provider";
 import { InventoryAccessView } from "@/components/inventory/access/view";
 import { useInventory } from "@/components/inventory/provider";
 import { Loader } from "@/components/loader";
+import { useErrorToaster } from "@/hooks/use-error-toaster";
 import { trpc } from "@/lib/trpc";
 import { AppRouterInput } from "@/trpc/router/_app";
 import { UserHit } from "@/types/typesense";
 import React from "react";
 
 export default function Page() {
-  const { inventory } = useInventory();
-  const [changes, setChanges] = React.useState<Record<string, any>>({});
+  const { inventory, refetch } = useInventory();
+
+  const errorToast = useErrorToaster();
 
   const trpcUtils = trpc.useUtils();
 
@@ -19,56 +21,40 @@ export default function Page() {
     where: { inventories: { some: { inventoryId: inventory.id } } },
   });
 
-  const { data, isLoading, refetch, fetchNextPage } =
+  const { data, isLoading, fetchNextPage } =
     trpc.user.findMany.useInfiniteQuery(input, {
       getNextPageParam: (prev) => prev.nextCursor,
     });
 
-  const { mutateAsync } = trpc.inventory.update.useMutation({
-    onSuccess: () => {
-      setInput((prev) => ({ ...prev, cursor: undefined }));
-      trpcUtils.user.findMany.invalidate();
-    },
+  const { mutateAsync: membersCreateMutate } =
+    trpc.inventoryUser.createMany.useMutation({
+      onSuccess: () => trpcUtils.user.findMany.invalidate(),
+      onError: ({ data }) => errorToast(data?.code),
+    });
+
+  const { mutateAsync: membersDeleteMutate } =
+    trpc.inventoryUser.deleteMany.useMutation({
+      onSuccess: () => trpcUtils.user.findMany.invalidate(),
+      onError: ({ data }) => errorToast(data?.code),
+    });
+
+  const handleAddMembers = useSaveWithStatus((users: UserHit[]) => {
+    return membersCreateMutate({
+      data: users.map((u) => ({ inventoryId: inventory.id, userId: u.id })),
+      skipDuplicates: true,
+    });
+  });
+
+  const handleDeleteMembers = useSaveWithStatus((usersIds: string[]) => {
+    return membersDeleteMutate({
+      where: { userId: { in: usersIds }, inventoryId: inventory.id },
+    });
   });
 
   function handleSort(state: Record<string, string>) {
     setInput((p) => ({ ...p, orderBy: state, cursor: undefined }));
     refetch();
   }
-
-  function buildDeleteMembers(ids?: string[]) {
-    if (!ids) return;
-    return {
-      deleteMany: {
-        userId: { in: ids },
-      },
-    };
-  }
-
-  function buildAddMembers(users?: UserHit[]) {
-    if (!users) return;
-    return {
-      createMany: {
-        data: users.map(({ id }) => ({ userId: id })),
-      },
-    };
-  }
-
-  async function handleChanges() {
-    const data = {
-      members: {
-        ...buildAddMembers(changes.add),
-        ...buildDeleteMembers(changes.delete),
-      },
-    };
-
-    return mutateAsync({
-      where: { id: inventory.id },
-      data,
-    });
-  }
-
-  useAutoSave(changes, handleChanges, 5000);
 
   if (isLoading) {
     return <Loader />;
@@ -79,10 +65,8 @@ export default function Page() {
       data={data?.pages.flatMap((p) => p.items) || []}
       onSortChange={handleSort}
       onLoadMore={fetchNextPage}
-      onAddUsers={(users) => setChanges((prev) => ({ ...prev, add: users }))}
-      onDeleteUsers={(users) => {
-        setChanges((prev) => ({ ...prev, delete: users }));
-      }}
+      onAddUsers={handleAddMembers}
+      onDeleteUsers={handleDeleteMembers}
     />
   );
 }
