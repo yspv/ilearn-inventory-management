@@ -4,9 +4,11 @@ import { InventoryInputSchema } from "@zenstackhq/runtime/zod/input";
 import {
   InventoryIncludeObjectSchema,
   InventoryOrderByWithRelationInputObjectSchema,
+  InventoryUpdateInputObjectSchema,
   InventoryWhereInputObjectSchema,
 } from "@zenstackhq/runtime/zod/objects";
 import { z } from "zod";
+import { lockInventory } from "./utils";
 
 export const inventoryRouter = router({
   aggregate: procedure
@@ -22,10 +24,26 @@ export const inventoryRouter = router({
       return ctx.prisma.inventory.create(input);
     }),
   update: procedure
-    .input(InventoryInputSchema.update)
+    .input(
+      z.object({
+        id: z.string(),
+        version: z.number(),
+        data: InventoryUpdateInputObjectSchema,
+      }),
+    )
     .mutation(async (opts) => {
       const { ctx, input } = opts;
-      return ctx.prisma.inventory.update(input);
+      return ctx.prisma.$transaction(async (tx) => {
+        const version = await lockInventory({
+          tx: tx as any,
+          id: input.id,
+          version: input.version,
+        });
+        return tx.inventory.update({
+          where: { id: input.id },
+          data: { ...input.data, version },
+        });
+      });
     }),
   findUnique: procedure.input(InventoryInputSchema.findUnique).query((opts) => {
     const { ctx, input } = opts;
