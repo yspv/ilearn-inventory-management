@@ -15,13 +15,45 @@
     "reload": "Reload"
   },
   "errors": {
+    "UNAUTHORIZED": {
+      "title": "Not logged in",
+      "description": "Please log in to continue."
+    },
+    "FORBIDDEN": {
+      "title": "Access denied",
+      "description": "You don’t have permission to perform this action."
+    },
+    "NOT_FOUND": {
+      "title": "Not found",
+      "description": "The requested resource could not be found."
+    },
     "CONFLICT": {
-      "title": "Version Conflict",
-      "description": "Someone else updated this item. Your changes weren’t saved. Please try again."
+      "title": "Conflict",
+      "description": "Another user updated this resource. Please refresh and try again."
+    },
+    "BAD_REQUEST": {
+      "title": "Invalid request",
+      "description": "The data you provided is not valid."
+    },
+    "PAYLOAD_TOO_LARGE": {
+      "title": "File too large",
+      "description": "The uploaded file exceeds the allowed size."
+    },
+    "INTERNAL_SERVER_ERROR": {
+      "title": "Server error",
+      "description": "Something went wrong. Please try again later."
+    },
+    "TIMEOUT": {
+      "title": "Timeout",
+      "description": "The request took too long. Please try again."
+    },
+    "TOO_MANY_REQUESTS": {
+      "title": "Slow down",
+      "description": "You’re sending too many requests. Please wait a moment."
     },
     "ERROR": {
-      "title": "Something went wrong",
-      "description": "Please try again if you see it again contact with support"
+      "title": "Error",
+      "description": "An unexpected error occurred."
     }
   },
   "inventory": {
