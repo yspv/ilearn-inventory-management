@@ -7,6 +7,7 @@ import { userRouter } from "./user/router";
 import { inventoryItemRouter } from "./inventory-item/router";
 import { inventoryCommentRouter } from "./inventory-comment/router";
 import { inventoryUserRouter } from "./inventory-user/router";
+import { inventoryItemLikeRouter } from "./inventory-item-like/router";
 
 export const appRouter = router({
   user: userRouter,
@@ -16,6 +17,7 @@ export const appRouter = router({
   inventoryField: inventoryFieldRouter,
   inventoryComment: inventoryCommentRouter,
   inventoryUser: inventoryUserRouter,
+  inventoryItemLike: inventoryItemLikeRouter,
 });
 export type AppRouter = typeof appRouter;
 export type AppRouterInput = inferRouterInputs<AppRouter>;
