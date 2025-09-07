@@ -98,6 +98,12 @@
         "digit9": "9-Digit field must use following format [D] or [D:N]. N is leading zeros.",
         "sequence": "Sequence field must use following format [D] or [D:N]. N is leading zeros."
       }
+    },
+    "stats": {
+      "total-items": "Total items",
+      "statistics": "Statistics",
+      "string-fields": "String Fields",
+      "numeric-fields": "Numeric Fields"
     }
   }
 }
