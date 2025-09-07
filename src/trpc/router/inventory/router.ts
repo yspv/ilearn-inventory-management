@@ -9,8 +9,32 @@ import {
 } from "@zenstackhq/runtime/zod/objects";
 import { z } from "zod";
 import { lockInventory } from "./utils";
+import {
+  buildNumericStats,
+  buildStringStats,
+  fetchAggregates,
+  fetchGroupedStrings,
+} from "../inventory-item/utils";
 
 export const inventoryRouter = router({
+  stats: procedure.input(z.object({ id: z.string() })).query(async (opts) => {
+    const { ctx, input } = opts;
+
+    const fields = await ctx.prisma.inventoryField.findMany({
+      where: { inventoryId: input.id },
+    });
+
+    const aggResult = await fetchAggregates(ctx, input.id, fields);
+    const groupResults = await fetchGroupedStrings(ctx, input.id, fields);
+    const numerics = buildNumericStats(fields, aggResult);
+    const strings = buildStringStats(fields, groupResults);
+
+    return {
+      total: aggResult._count,
+      strings: strings,
+      numeric: numerics,
+    };
+  }),
   aggregate: procedure
     .input(InventoryInputSchema.aggregate)
     .query(async (opts) => {
