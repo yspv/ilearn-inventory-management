@@ -236,8 +236,8 @@ model InventoryItemLike {
   item InventoryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   @@unique([userId, itemId])
-  @@allow('create', auth().isActive)
-
+  @@allow('read', true)
+  @@allow('create,delete', auth().isActive && auth() == user)
   @@map('inventory_itemlike')
 }
 
