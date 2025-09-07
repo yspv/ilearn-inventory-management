@@ -10,7 +10,7 @@ import { z } from "zod";
 import { Generator } from "../custom-id-field/generator";
 import { ItemInput } from "./schema";
 import { lockItem } from "./utils";
-import { lockInventory } from "../inventory/utils";
+import { TRPCError } from "@trpc/server";
 
 export const inventoryItemRouter = router({
   groupBy: procedure.input(InventoryItemInputSchema.groupBy).query((opts) => {
@@ -73,11 +73,15 @@ export const inventoryItemRouter = router({
       );
 
       return ctx.prisma.$transaction(async (tx) => {
-        await lockInventory({
-          tx: tx as any,
-          id: item.inventory.id,
-          version: input.inventoryVersion,
-        });
+        const inventory = await checkPrismaError(
+          tx.inventory.findUniqueOrThrow({ where: { id: item.inventoryId } }),
+        );
+        if (inventory.version !== input.inventoryVersion) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Version conflict",
+          });
+        }
         await lockItem({
           tx: tx as any,
           id: input.id,
