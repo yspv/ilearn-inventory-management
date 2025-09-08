@@ -4,6 +4,7 @@ import { Avatar, Flex, Popover, Text, Button } from "@radix-ui/themes";
 import { signOut, useSession } from "next-auth/react";
 import { SignInButton } from "./signin-button";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export function UserMenu() {
   const t = useTranslations("sign-in");
@@ -39,6 +40,22 @@ export function UserMenu() {
             radius="full"
           />
           <Text size="5">{t("hello", { name: data?.user.name || "" })} </Text>
+          <Popover.Close>
+            <Link
+              href={`/profile/${data.user.id}`}
+              passHref
+              style={{ width: "100%" }}
+            >
+              <Button
+                color="gray"
+                variant="soft"
+                highContrast
+                style={{ width: "100%" }}
+              >
+                Profile
+              </Button>
+            </Link>
+          </Popover.Close>
           <Button onClick={handleSignOut} style={{ width: "100%" }}>
             <ExitIcon />
             {t("sign-out")}
