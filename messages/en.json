@@ -1,6 +1,9 @@
 {
-  "SignIn": {
-    "title": "Sign In"
+  "sign-in": {
+    "title": "Sign In",
+    "option": "Sign In with {provider}",
+    "hello": "Hi, {name}",
+    "sign-out": "Sign Out"
   },
   "auto-save": {
     "status": {

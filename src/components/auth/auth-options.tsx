@@ -1,9 +1,11 @@
 "use client";
 import { Button, Flex } from "@radix-ui/themes";
 import { signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export function AuthOptions() {
+  const t = useTranslations("sign-in");
   return (
     <Flex
       align="stretch"
@@ -22,7 +24,7 @@ export function AuthOptions() {
           width={"20"}
           alt="google-logo"
         />
-        Sign In with Google
+        {t("option", { provider: "Google" })}
       </Button>
       <Button onClick={() => signIn("facebook")} variant="outline">
         <Image
@@ -31,7 +33,7 @@ export function AuthOptions() {
           width={"20"}
           alt="facebook-logo"
         />
-        Sign In with Facebook
+        {t("option", { provider: "Facebook" })}
       </Button>
     </Flex>
   );
