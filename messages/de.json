@@ -1,0 +1,184 @@
+{
+  "main": {
+    "last-inventories": "Letzte Inventare",
+    "top-inventories": "Top-Inventare"
+  },
+  "sign-in": {
+    "title": "Anmelden",
+    "option": "Mit {provider} anmelden",
+    "hello": "Hallo, {name}",
+    "sign-out": "Abmelden"
+  },
+  "auto-save": {
+    "status": {
+      "idle": "Keine Änderungen",
+      "pending": "Speichern...",
+      "success": "Alle Änderungen gespeichert",
+      "notSaved": "Nicht gespeichert",
+      "error": "Fehler"
+    }
+  },
+  "labels": {
+    "reload": "Neu laden",
+    "create": "Erstellen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "cancel": "Abbrechen"
+  },
+  "errors": {
+    "UNAUTHORIZED": {
+      "title": "Nicht angemeldet",
+      "description": "Bitte melden Sie sich an, um fortzufahren."
+    },
+    "FORBIDDEN": {
+      "title": "Zugriff verweigert",
+      "description": "Sie haben keine Berechtigung, diese Aktion auszuführen."
+    },
+    "NOT_FOUND": {
+      "title": "Nicht gefunden",
+      "description": "Die angeforderte Ressource konnte nicht gefunden werden."
+    },
+    "CONFLICT": {
+      "title": "Konflikt",
+      "description": "Ein anderer Benutzer hat diese Ressource geändert. Bitte aktualisieren und erneut versuchen."
+    },
+    "BAD_REQUEST": {
+      "title": "Ungültige Anfrage",
+      "description": "Die angegebenen Daten sind ungültig."
+    },
+    "PAYLOAD_TOO_LARGE": {
+      "title": "Datei zu groß",
+      "description": "Die hochgeladene Datei überschreitet die zulässige Größe."
+    },
+    "INTERNAL_SERVER_ERROR": {
+      "title": "Serverfehler",
+      "description": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut."
+    },
+    "TIMEOUT": {
+      "title": "Zeitüberschreitung",
+      "description": "Die Anfrage hat zu lange gedauert. Bitte erneut versuchen."
+    },
+    "TOO_MANY_REQUESTS": {
+      "title": "Zu viele Anfragen",
+      "description": "Sie senden zu viele Anfragen. Bitte warten Sie einen Moment."
+    },
+    "ERROR": {
+      "title": "Fehler",
+      "description": "Ein unerwarteter Fehler ist aufgetreten."
+    }
+  },
+  "inventory": {
+    "main": {
+      "title": "Titel",
+      "description": "Beschreibung",
+      "category": "Kategorie",
+      "owner": "Besitzer",
+      "isPrivate": "Privat",
+      "link": "Link"
+    },
+    "item": {
+      "owner": "Besitzer",
+      "createdAt": "Erstellt am",
+      "updatedAt": "Aktualisiert am",
+      "likes": "Gefällt mir"
+    },
+    "tab": {
+      "items": "Artikel",
+      "discussion": "Diskussion",
+      "settings": "Einstellungen",
+      "customId": "Benutzerdefinierte ID",
+      "access": "Zugriff",
+      "fields": "Felder",
+      "stats": "Statistiken"
+    },
+    "discussion": {
+      "placeholder": "Kommentare hinzufügen...",
+      "comment": "Kommentieren"
+    },
+    "settings": {
+      "title": "Titel",
+      "category": "Kategorie",
+      "description": "Beschreibung",
+      "private": "Privat",
+      "tags": "Tags"
+    },
+    "access": {
+      "name": "Name",
+      "email": "E-Mail",
+      "share": "Inventar teilen",
+      "placeholder": "Benutzer auswählen...",
+      "add-user": {
+        "button": "Benutzer hinzufügen",
+        "title": "Inventar teilen"
+      },
+      "delete-user": {
+        "button": "Löschen",
+        "title": "Benutzer löschen?",
+        "description": "Sind Sie sicher? Die ausgewählten Benutzer und ihre Felder werden gelöscht."
+      }
+    },
+    "fields": {
+      "add-field": {
+        "button": "Feld hinzufügen",
+        "title": "Neues Feld hinzufügen"
+      },
+      "edit-field": {
+        "title": "Feld bearbeiten"
+      },
+      "types": {
+        "string": "Zeichenkette",
+        "mlText": "Mehrzeiliger Text",
+        "num": "Zahl",
+        "link": "Link",
+        "boolean": "Boolesch"
+      },
+      "type": "Typ",
+      "title": "Titel",
+      "description": "Beschreibung",
+      "required": "Erforderlich",
+      "visible": "Sichtbar"
+    },
+    "custom-id": {
+      "add-element": "Element hinzufügen",
+      "example": "Beispiel",
+      "types": {
+        "fixed": "Fest",
+        "datetime": "Datum/Zeit",
+        "bit32": "32-Bit",
+        "bit20": "20-Bit",
+        "digit9": "9-stellig",
+        "digit6": "6-stellig",
+        "guid": "GUID",
+        "sequence": "Sequenz"
+      },
+      "tooltips": {
+        "datetime": "Geben Sie das Datum in einem dieser Formate ein: [JJJJ-MM-TT], [JJJJ-MM] oder [JJJJ].",
+        "fixed": "Dieses Feld muss mindestens ein Zeichen enthalten.",
+        "guid": "Global eindeutige Kennung (GUID) im Standard-[G]-Format.",
+        "bit32": "Dies kann eine 10-stellige Dezimalzahl ([D:10]) oder eine 8-stellige Hexadezimalzahl ([X:8]) sein.",
+        "bit20": "Dies kann eine 7-stellige Dezimalzahl [D:7] oder eine 5-stellige Hexadezimalzahl [X:5] sein.",
+        "digit9": "Sie können [D] oder [D:N] verwenden, wobei N die Gesamtzahl der Ziffern einschließlich führender Nullen darstellt.",
+        "digit6": "Sie können [D] oder [D:N] verwenden, wobei N die Gesamtzahl der Ziffern einschließlich führender Nullen darstellt.",
+        "sequence": "Sie können [D] oder [D:N] verwenden, wobei N die Gesamtzahl der Ziffern einschließlich führender Nullen darstellt."
+      },
+      "errors": {
+        "field-limit": "Die Anzahl der Felder ist ausgeschöpft",
+        "unique-error": "Mindestens ein Feld sollte einen eindeutigen Typ enthalten: GUID, SEQUENZ, BIT32, BIT20, DIGIT6, DIGIT9",
+        "datetime": "Datumsfeld muss folgendes Format verwenden: [JJJJ-MM-TT], [JJJJ-MM] oder [JJJJ]",
+        "fixed": "Festes Feld muss mindestens ein Zeichen enthalten.",
+        "guid": "GUID-Feld muss das Format [G] verwenden",
+        "bit32": "32-Bit-Feld muss folgendes Format verwenden: Dezimal [D:10] oder Hexadezimal [X:8]",
+        "bit20": "20-Bit-Feld muss folgendes Format verwenden: Dezimal [D:7] oder Hexadezimal [X:5]",
+        "digit6": "6-stelliges Feld muss folgendes Format verwenden [D] oder [D:N]. N sind führende Nullen.",
+        "digit9": "9-stelliges Feld muss folgendes Format verwenden [D] oder [D:N]. N sind führende Nullen.",
+        "sequence": "Sequenzfeld muss folgendes Format verwenden [D] oder [D:N]. N sind führende Nullen."
+      }
+    },
+    "stats": {
+      "total-items": "Gesamtanzahl der Artikel",
+      "statistics": "Statistiken",
+      "string-fields": "Textfelder",
+      "numeric-fields": "Zahlenfelder"
+    }
+  }
+}
