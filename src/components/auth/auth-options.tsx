@@ -26,7 +26,10 @@ export function AuthOptions() {
         />
         {t("option", { provider: "Google" })}
       </Button>
-      <Button onClick={() => signIn("facebook")} variant="outline">
+      <Button
+        onClick={() => signIn("facebook", { redirectTo: "/" })}
+        variant="outline"
+      >
         <Image
           src="/facebook-logo.svg"
           height={"20"}
