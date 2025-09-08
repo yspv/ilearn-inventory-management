@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { emailVerification } from "../actions";
 
 export default function Page() {
-  const t = useTranslations("SignIn");
+  const t = useTranslations("sign-in");
   return (
     <Flex
       justify="center"
