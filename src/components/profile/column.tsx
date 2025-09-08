@@ -6,10 +6,12 @@ import { ProfileInventoryFilter } from "./inventory-filter";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { ProfileInventorySorter } from "./inventory-sorter";
 
-export const columns: ColumnDef<Inventory & { owner: User }>[] = [
+export const columns = (
+  t: (key: string) => string,
+): ColumnDef<Inventory & { owner: User }>[] => [
   {
     accessorKey: "title",
-    header: ({ column }) => DataTableHeader({ title: "Title", column }),
+    header: ({ column }) => DataTableHeader({ title: t("title"), column }),
     cell: ({ row }) => {
       const { title, isPrivate } = row.original;
       return (
@@ -23,6 +25,7 @@ export const columns: ColumnDef<Inventory & { owner: User }>[] = [
         </Flex>
       );
     },
+    enableSorting: false,
   },
   {
     accessorKey: "owner",
@@ -40,7 +43,7 @@ export const columns: ColumnDef<Inventory & { owner: User }>[] = [
   {
     accessorKey: "updatedAt",
     header: ({ column }) =>
-      DataTableHeader({ justify: "end", title: "Last Modified", column }),
+      DataTableHeader({ justify: "end", title: t("updatedAt"), column }),
     cell: ({ row }) => {
       const { updatedAt } = row.original;
       return (
@@ -49,6 +52,7 @@ export const columns: ColumnDef<Inventory & { owner: User }>[] = [
         </Flex>
       );
     },
+    enableSorting: false,
   },
   {
     id: "sort",

@@ -12,8 +12,11 @@ import React from "react";
 import { columns } from "./column";
 import { resolveUpdater, sortingToQuery } from "@/utils";
 import { InfiniteScroll } from "../infinite-scroll";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 export interface Props {
+  isOwner: boolean;
   data: (Inventory & { owner: User })[];
   defaultFilter: "me" | "notMe" | "anyone";
   onFilterChange(filters: Record<string, any>): void;
@@ -23,6 +26,8 @@ export interface Props {
 
 export function ProfileInventoryTable(props: Props) {
   const { data, defaultFilter, onFilterChange, onSortChange, loadMore } = props;
+  const t = useTranslations("profile.columns");
+  const router = useRouter();
 
   const [filters, setFilters] = React.useState<ColumnFiltersState>([
     { id: "owner", value: defaultFilter },
@@ -42,7 +47,7 @@ export function ProfileInventoryTable(props: Props) {
   }
 
   const table = useReactTable({
-    columns,
+    columns: columns(t),
     data: data || [],
     getCoreRowModel: getCoreRowModel(),
     manualFiltering: true,
@@ -56,7 +61,10 @@ export function ProfileInventoryTable(props: Props) {
   });
   return (
     <InfiniteScroll loadMore={loadMore}>
-      <DataTable table={table} />
+      <DataTable
+        table={table}
+        onRowClick={(row) => router.push(`/inventory/${row.original.id}/items`)}
+      />
     </InfiniteScroll>
   );
 }

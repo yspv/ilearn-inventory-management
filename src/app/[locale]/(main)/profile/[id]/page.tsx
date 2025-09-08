@@ -6,12 +6,12 @@ import { useUserInventory } from "@/hooks/use-user-inventory";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
-  const { inventories, sort, filter, fetchNextPage } = useUserInventory(
-    params?.id,
-  );
+  const { inventories, sort, filter, fetchNextPage, isOwner } =
+    useUserInventory(params?.id);
 
   return (
     <ProfileView
+      isOwner={isOwner}
       data={inventories || []}
       defaultFilter="anyone"
       onFilterChange={filter}

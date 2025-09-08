@@ -1,8 +1,10 @@
 import { trpc } from "@/lib/trpc";
 import { AppRouterInput } from "@/trpc/router/_app";
+import { useSession } from "next-auth/react";
 import React from "react";
 
 export function useUserInventory(userId?: string) {
+  const { data: session } = useSession();
   const [input, setInput] = React.useState<
     AppRouterInput["inventory"]["findMany"]
   >({
@@ -56,6 +58,7 @@ export function useUserInventory(userId?: string) {
 
   return {
     inventories: data?.pages.flatMap((p: any) => p.items),
+    isOwner: session?.user.id === userId,
     sort,
     filter,
     fetchNextPage,

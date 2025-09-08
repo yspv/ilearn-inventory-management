@@ -1,19 +1,21 @@
 import { Column } from "@tanstack/react-table";
 import { Select } from "@radix-ui/themes";
+import { useTranslations } from "next-intl";
 
 export function ProfileInventoryFilter(props: { column: Column<any> }) {
   const { column } = props;
+  const t = useTranslations("profile.filters");
   const options = [
     {
-      title: "Owned by me",
+      title: t("me"),
       value: "me",
     },
     {
-      title: "Owned not by me",
+      title: t("notMe"),
       value: "notMe",
     },
     {
-      title: "Owned by anyone",
+      title: t("anyone"),
       value: "anyone",
     },
   ];
