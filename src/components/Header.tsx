@@ -13,6 +13,8 @@ import {
 import { User } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import { ThemeChanger } from "./theme-changer";
+import { LanguageSelect } from "./language-select";
+import { Logo } from "./logo";
 
 function UserPopover(props: { user: User; onLogOut(): void }) {
   const { user, onLogOut } = props;
@@ -85,12 +87,15 @@ export function Header() {
         align={"center"}
         gap="6"
         py="4"
-        px="6"
+        px={{ initial: "4", lg: "6" }}
         style={{ background: "var(--color-background)" }}
       >
-        <Flex flexBasis="20%"></Flex>
+        <Flex flexBasis="20%">
+          <Logo />
+        </Flex>
         <Flex flexBasis="60%">{/*<Search />*/}</Flex>
         <Flex justify="end" align="center" flexBasis="20%" gap="4">
+          <LanguageSelect />
           <ThemeChanger />
           {user ? (
             <UserPopover user={user} onLogOut={handleSignOut} />
