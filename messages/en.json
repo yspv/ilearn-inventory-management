@@ -3,6 +3,22 @@
     "last-inventories": "Last Inventories",
     "top-inventories": "Top Inventories"
   },
+  "profile": {
+    "columns": {
+      "title": "Title",
+      "updatedAt": "Last modified"
+    },
+    "filters": {
+      "me": "Owned by me",
+      "notMe": "Owned by not me",
+      "anyone": "Owned by anyone"
+    },
+    "sorting": {
+      "private": "Private",
+      "lastModified": "Last modified",
+      "title": "Title"
+    }
+  },
   "sign-in": {
     "title": "Sign In",
     "option": "Sign In with {provider}",

@@ -3,6 +3,22 @@
     "last-inventories": "Letzte Inventare",
     "top-inventories": "Top-Inventare"
   },
+  "profile": {
+    "columns": {
+      "title": "Titel",
+      "updatedAt": "Zuletzt geändert"
+    },
+    "filters": {
+      "me": "Im Besitz von mir",
+      "notMe": "Nicht von mir",
+      "anyone": "Von jedem"
+    },
+    "sorting": {
+      "private": "Privat",
+      "lastModified": "Zuletzt geändert",
+      "title": "Titel"
+    }
+  },
   "sign-in": {
     "title": "Anmelden",
     "option": "Mit {provider} anmelden",
