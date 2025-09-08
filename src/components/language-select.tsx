@@ -14,9 +14,9 @@ export function LanguageSelect() {
   return (
     <Select.Root defaultValue={locale} onValueChange={changeLanguage}>
       <Select.Trigger />
-      <Select.Content>
-        <Select.Item value="en">En</Select.Item>
-        <Select.Item value="de">De</Select.Item>
+      <Select.Content position="popper" align="end">
+        <Select.Item value="en">English</Select.Item>
+        <Select.Item value="de">Deutsch</Select.Item>
       </Select.Content>
     </Select.Root>
   );
