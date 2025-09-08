@@ -38,7 +38,7 @@ export function UserMenu() {
             size="6"
             radius="full"
           />
-          <Text size="5">{t("hello", { name: data?.user.name })} </Text>
+          <Text size="5">{t("hello", { name: data?.user.name || "" })} </Text>
           <Button onClick={handleSignOut} style={{ width: "100%" }}>
             <ExitIcon />
             {t("sign-out")}
