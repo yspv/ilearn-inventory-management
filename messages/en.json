@@ -1,4 +1,8 @@
 {
+  "main": {
+    "last-inventories": "Last Inventories",
+    "top-inventories": "Top Inventories"
+  },
   "sign-in": {
     "title": "Sign In",
     "option": "Sign In with {provider}",
@@ -15,7 +19,11 @@
     }
   },
   "labels": {
-    "reload": "Reload"
+    "reload": "Reload",
+    "create": "Create",
+    "save": "Save",
+    "delete": "Delete",
+    "cancel": "Cancel"
   },
   "errors": {
     "UNAUTHORIZED": {
@@ -68,6 +76,12 @@
       "isPrivate": "Private",
       "link": "Link"
     },
+    "item": {
+      "owner": "Owner",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "likes": "Likes"
+    },
     "tab": {
       "items": "Items",
       "discussion": "Discussion",
@@ -77,8 +91,66 @@
       "fields": "Fields",
       "stats": "Stats"
     },
+    "discussion": {
+      "placeholder": "Add comments...",
+      "comment": "Comment"
+    },
+    "settings": {
+      "title": "Title",
+      "category": "Category",
+      "description": "Description",
+      "private": "Private",
+      "tags": "Tags"
+    },
+    "access": {
+      "name": "Name",
+      "email": "Email",
+      "share": "Share Inventory",
+      "placeholder": "Select users...",
+      "add-user": {
+        "button": "Add User",
+        "title": "Share Inventory"
+      },
+      "delete-user": {
+        "button": "Delete",
+        "title": "Delete User(s)?",
+        "description": "Are you sure? The selected users and their field will be deleted."
+      }
+    },
+    "fields": {
+      "add-field": {
+        "button": "Add field",
+        "title": "Add new field"
+      },
+      "edit-field": {
+        "title": "Edit field"
+      },
+      "types": {
+        "string": "String",
+        "mlText": "Multi-line Text",
+        "num": "Number",
+        "link": "Link",
+        "boolean": "Boolean"
+      },
+      "type": "Type",
+      "title": "Title",
+      "description": "Description",
+      "required": "Required",
+      "visible": "Visible"
+    },
     "custom-id": {
       "add-element": "Add Element",
+      "example": "Example",
+      "types": {
+        "fixed": "Fixed",
+        "datetime": "Datetime",
+        "bit32": "32-Bit",
+        "bit20": "20-Bit",
+        "digit9": "Digit-9",
+        "digit6": "Digit-6",
+        "guid": "GUID",
+        "sequence": "Sequence"
+      },
       "tooltips": {
         "datetime": "Enter the date in one of these formats: [YYYY-MM-DD], [YYYY-MM], or [YYYY].",
         "fixed": "This field must contain at least one character.",

@@ -2,9 +2,11 @@
 import { Checkbox, Flex, Text, TextArea, TextField } from "@radix-ui/themes";
 import { InventoryFieldSelect } from "./field-select";
 import { Control, Controller } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 export function InventoryFieldForm(props: { control: Control<any> }) {
   const { control } = props;
+  const t = useTranslations("inventory.fields");
   return (
     <Flex direction="column" gap="4">
       <Controller
@@ -13,7 +15,7 @@ export function InventoryFieldForm(props: { control: Control<any> }) {
         render={({ field, fieldState }) => (
           <Flex direction="column" gap="2">
             <Text weight="medium" size="2">
-              Type
+              {t("type")}
             </Text>
             <InventoryFieldSelect
               type={field.value}
@@ -29,7 +31,7 @@ export function InventoryFieldForm(props: { control: Control<any> }) {
         render={({ field, fieldState }) => (
           <Flex direction="column" gap="2">
             <Text weight="medium" size="2">
-              Title
+              {t("title")}
             </Text>
             <TextField.Root
               size="3"
@@ -51,7 +53,7 @@ export function InventoryFieldForm(props: { control: Control<any> }) {
         render={({ field, fieldState }) => (
           <Flex direction="column" gap="2">
             <Text weight="medium" size="2">
-              Description
+              {t("description")}
             </Text>
             <TextArea
               size="3"
@@ -76,7 +78,7 @@ export function InventoryFieldForm(props: { control: Control<any> }) {
                 checked={field.value}
                 onCheckedChange={(state) => field.onChange(state)}
               />
-              Required
+              {t("required")}
             </Flex>
           </Text>
         )}
@@ -91,7 +93,7 @@ export function InventoryFieldForm(props: { control: Control<any> }) {
                 checked={field.value}
                 onCheckedChange={(state) => field.onChange(state)}
               />
-              Visible
+              {t("visible")}
             </Flex>
           </Text>
         )}

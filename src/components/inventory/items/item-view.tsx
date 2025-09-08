@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { schema } from "./schema";
+import { useTranslations } from "next-intl";
 
 interface Props {
   fields: InventoryField[];
@@ -22,6 +23,8 @@ type Schema = z.infer<typeof schema>;
 
 export function InventoryItemsItemView(props: Props) {
   const { item, owner, fields, onSave, onLike, likes, liked } = props;
+  const t = useTranslations("inventory.item");
+  const label = useTranslations("labels");
   const { handleSubmit, register, control } = useForm<
     z.input<typeof schema>,
     z.output<typeof schema>
@@ -41,17 +44,17 @@ export function InventoryItemsItemView(props: Props) {
         </Flex>
         <DataList.Root>
           <DataList.Item>
-            <DataList.Label>Owner</DataList.Label>
+            <DataList.Label>{t("owner")}</DataList.Label>
             <DataList.Value>
               <Link>{owner.name}</Link>
             </DataList.Value>
           </DataList.Item>
           <DataList.Item>
-            <DataList.Label>Created At</DataList.Label>
+            <DataList.Label>{t("createdAt")}</DataList.Label>
             <DataList.Value>{item.createdAt.toLocaleString()}</DataList.Value>
           </DataList.Item>
           <DataList.Item>
-            <DataList.Label>Updated At</DataList.Label>
+            <DataList.Label>{t("updatedAt")}</DataList.Label>
             <DataList.Value>{item.updatedAt.toLocaleString()}</DataList.Value>
           </DataList.Item>
           <DataList.Item>
@@ -86,7 +89,7 @@ export function InventoryItemsItemView(props: Props) {
             })}
           </Flex>
           <Flex gap="2" mt="6">
-            <Button type="submit">Save</Button>
+            <Button type="submit">{label("save")}</Button>
           </Flex>
         </form>
       </Flex>

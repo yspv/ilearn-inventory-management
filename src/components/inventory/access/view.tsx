@@ -18,6 +18,7 @@ import { UserHit } from "@/types/typesense";
 import { InventoryAccessUserDelete } from "./user-delete-dialog";
 import { useInventory } from "../provider";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 interface Props {
   data: User[];
@@ -29,6 +30,7 @@ interface Props {
 
 export function InventoryAccessView(props: Props) {
   const { data, onSortChange, onLoadMore, onDeleteUsers, onAddUsers } = props;
+  const t = useTranslations("inventory.access");
   const { inventory } = useInventory();
   const router = useRouter();
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
@@ -55,7 +57,7 @@ export function InventoryAccessView(props: Props) {
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columns(t),
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: handleSortingChange,
     onRowSelectionChange: handleRowSelectionChange,

@@ -6,10 +6,13 @@ import React from "react";
 import { InventoryAccessUserSelector } from "./user-selector";
 import { MultiValue } from "react-select";
 import { UserHit } from "@/types/typesense";
+import { useTranslations } from "next-intl";
 
 export function InventoryAccessUserAddDialog(props: {
   onSelect(users: UserHit[]): void;
 }) {
+  const t = useTranslations("inventory.access.add-user");
+  const label = useTranslations("labels");
   const [selectedItems, setSelectItems] = React.useState<MultiValue<UserHit>>(
     [],
   );
@@ -31,14 +34,14 @@ export function InventoryAccessUserAddDialog(props: {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>Add User</Button>
+        <Button>{t("button")}</Button>
       </Dialog.Trigger>
       <Dialog.Content
         width={{ initial: "100%", lg: "30%" }}
         style={{ overflow: "visible" }}
       >
         <Flex direction="column" mb="4">
-          <Dialog.Title weight="medium">Share Inventory</Dialog.Title>
+          <Dialog.Title weight="medium">{t("title")}</Dialog.Title>
         </Flex>
         <Dialog.Description></Dialog.Description>
         <Flex direction="column" gap="6">
@@ -50,11 +53,11 @@ export function InventoryAccessUserAddDialog(props: {
           />
           <Flex justify={"end"} align="center" gap="4">
             <Dialog.Close>
-              <Button variant="ghost">Cancel</Button>
+              <Button variant="ghost">{label("cancel")}</Button>
             </Dialog.Close>
             <Dialog.Close>
               <Button onClick={() => onSelect(selectedItems as UserHit[])}>
-                Save
+                {label("save")}
               </Button>
             </Dialog.Close>
           </Flex>

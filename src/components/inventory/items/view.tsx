@@ -10,6 +10,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 
 interface Props {
   inventory: Inventory;
@@ -20,6 +21,7 @@ interface Props {
 
 export function InventoryItemsView(props: Props) {
   const router = useRouter();
+  const label = useTranslations("labels");
   const { fields, items, onLoadMore } = props;
   const columns: ColumnDef<InventoryItem>[] = [
     {
@@ -74,10 +76,12 @@ export function InventoryItemsView(props: Props) {
       <Flex my="4">
         {table.getIsAllPageRowsSelected() ||
           (table.getIsSomeRowsSelected() && (
-            <Button variant="surface">Delete</Button>
+            <Button variant="surface">{label("delete")}</Button>
           ))}
         <Flex ml="auto">
-          <Button onClick={() => router.push(`items/create`)}>Create</Button>
+          <Button onClick={() => router.push(`items/create`)}>
+            {label("create")}
+          </Button>
         </Flex>
       </Flex>
       <InfiniteScroll loadMore={onLoadMore}>

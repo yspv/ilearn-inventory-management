@@ -1,5 +1,6 @@
 "use client";
 import { Flex, Select } from "@radix-ui/themes";
+import { useTranslations } from "next-intl";
 
 const options = [
   {
@@ -40,6 +41,7 @@ export function CustomIdFieldSelect(props: {
   onChange(type: string): void;
 }) {
   const { field, onChange } = props;
+  const t = useTranslations("inventory.custom-id.types");
   return (
     <Flex style={{ width: "100%" }}>
       <Select.Root
@@ -52,7 +54,7 @@ export function CustomIdFieldSelect(props: {
           <Select.Group>
             {options.map((op, i) => (
               <Select.Item key={i} value={op.type}>
-                {op.title}
+                {t(op.type)}
               </Select.Item>
             ))}
           </Select.Group>

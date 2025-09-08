@@ -2,6 +2,7 @@
 import { UserHit } from "@/types/typesense";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Avatar, Badge, Flex, Text } from "@radix-ui/themes";
+import { useTranslations } from "next-intl";
 import Select, { components, MultiValue } from "react-select";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
 export function InventoryAccessUserSelector(props: Props) {
   const { users, isLoading, onInputChange, onSelect } = props;
+  const t = useTranslations("inventory.access");
   return (
     <Select
       isMulti
@@ -21,6 +23,7 @@ export function InventoryAccessUserSelector(props: Props) {
         value: u.name,
         label: u.email,
       }))}
+      placeholder={t("placeholder")}
       classNamePrefix="rs"
       unstyled
       isLoading={isLoading}

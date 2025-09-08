@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 import { Avatar, Checkbox, Flex, Text } from "@radix-ui/themes";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const columns: ColumnDef<User>[] = [
+export const columns = (t: (key: string) => string): ColumnDef<User>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -28,7 +28,9 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "name",
-    header: ({ column }) => <DataTableHeader column={column} title={"Name"} />,
+    header: ({ column }) => (
+      <DataTableHeader column={column} title={t("name")} />
+    ),
     cell: ({ row }) => {
       return (
         <Flex align="center" gap="2">
@@ -47,6 +49,8 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "email",
-    header: ({ column }) => <DataTableHeader column={column} title="Email" />,
+    header: ({ column }) => (
+      <DataTableHeader column={column} title={t("email")} />
+    ),
   },
 ];

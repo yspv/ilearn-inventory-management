@@ -14,6 +14,7 @@ import {
 import dynamic from "next/dynamic";
 import { Controller, useForm } from "react-hook-form";
 import { InventoryCreateSchema as schema, InventoryCreateType } from "./schema";
+import { useTranslations } from "next-intl";
 
 const MarkdownEditor = dynamic(() => import("@/components/markdown"), {
   ssr: false,
@@ -25,6 +26,8 @@ interface Props {
 
 export function InventoryCreateView(props: Props) {
   const { onSave } = props;
+  const t = useTranslations("inventory.settings");
+  const labels = useTranslations("labels");
   const { handleSubmit, control } = useForm({
     defaultValues: {
       title: "",
@@ -46,7 +49,7 @@ export function InventoryCreateView(props: Props) {
               render={({ field }) => (
                 <Text as="label" size="2">
                   <Flex direction="column" gap="2">
-                    Title
+                    {t("title")}
                     <TextField.Root
                       size="3"
                       value={field.value}
@@ -66,7 +69,7 @@ export function InventoryCreateView(props: Props) {
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
-                    Private
+                    {t("private")}
                   </Flex>
                 </Text>
               )}
@@ -77,7 +80,7 @@ export function InventoryCreateView(props: Props) {
               render={({ field }) => (
                 <Text as="label" size="2">
                   <Flex direction="column" gap="2">
-                    Category
+                    {t("category")}
                     <CategoryCombobox
                       onChange={({ name }) => {
                         field.onChange(name);
@@ -93,7 +96,7 @@ export function InventoryCreateView(props: Props) {
               render={({ field }) => (
                 <Text as="label" size="2">
                   <Flex direction="column" gap="2">
-                    Tags
+                    {t("tags")}
                     <TagsCombobox
                       onChange={(tags) => {
                         field.onChange(tags.map((t) => t.name));
@@ -112,7 +115,7 @@ export function InventoryCreateView(props: Props) {
             render={({ field }) => (
               <Text size="2">
                 <Flex direction="column" gap="2">
-                  Description
+                  {t("description")}
                   <MarkdownEditor
                     markdown={field.value}
                     onChange={field.onChange}
@@ -123,7 +126,7 @@ export function InventoryCreateView(props: Props) {
           />
         </Flex>
         <Flex width={{ initial: "100%", lg: "fit-content" }} mt="6">
-          <Button style={{ width: "100%" }}>Save</Button>
+          <Button style={{ width: "100%" }}>{labels("save")}</Button>
         </Flex>
       </Container>
     </form>

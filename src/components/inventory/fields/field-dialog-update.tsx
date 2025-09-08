@@ -4,6 +4,7 @@ import { InventoryFieldForm } from "./form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
+import { useTranslations } from "next-intl";
 
 interface Props {
   field: any;
@@ -12,6 +13,8 @@ interface Props {
 
 export function InventoryFieldDialogUpdate(props: Props) {
   const { field, onUpdate } = props;
+  const t = useTranslations("inventory.fields.edit-field");
+  const label = useTranslations("labels");
   const { control, handleSubmit, formState } = useForm({
     defaultValues: field,
     resolver: zodResolver(schema),
@@ -35,11 +38,11 @@ export function InventoryFieldDialogUpdate(props: Props) {
       >
         <form onSubmit={handleSubmit(onUpdate)}>
           <Flex direction="column">
-            <Dialog.Title>Update field</Dialog.Title>
+            <Dialog.Title>{t("title")}</Dialog.Title>
             <InventoryFieldForm control={control} />
             <Dialog.Close disabled={!formState.isValid}>
               <Button type="submit" mt="4">
-                Save
+                {label("save")}
               </Button>
             </Dialog.Close>
           </Flex>

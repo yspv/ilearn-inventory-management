@@ -4,6 +4,7 @@ import { CategoryCombobox } from "@/components/category-combobox";
 import { TagsCombobox } from "@/components/tags-combobox";
 import { Category, Inventory, Tag } from "@prisma/client";
 import { Flex, Text, Grid, TextField, Checkbox } from "@radix-ui/themes";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -26,6 +27,7 @@ export interface InventorySettingsProps {
 
 export function InventorySettingsView(props: InventorySettingsProps) {
   const { inventory, tags, category, onUpdate } = props;
+  const t = useTranslations("inventory.settings");
   const [data, setData] = React.useState(inventory);
 
   async function handleUpdate() {
@@ -40,7 +42,7 @@ export function InventorySettingsView(props: InventorySettingsProps) {
         <Flex direction="column" gap="4">
           <Text as="label" size="2">
             <Flex direction="column" gap="2">
-              Title
+              {t("title")}
               <TextField.Root
                 value={data.title}
                 size="3"
@@ -58,12 +60,12 @@ export function InventorySettingsView(props: InventorySettingsProps) {
                   setData((p) => ({ ...p, isPrivate: state as boolean }))
                 }
               />
-              Private
+              {t("private")}
             </Flex>
           </Text>
           <Text as="label" size="2">
             <Flex direction="column" gap="2">
-              Category
+              {t("category")}
               <CategoryCombobox
                 initial={category}
                 onChange={(category) => {
@@ -74,7 +76,7 @@ export function InventorySettingsView(props: InventorySettingsProps) {
           </Text>
           <Text size="2">
             <Flex direction="column" gap="2">
-              Tags
+              {t("tags")}
               <TagsCombobox
                 initial={tags}
                 onChange={(tags) => setData((prev) => ({ ...prev, tags }))}
@@ -85,7 +87,7 @@ export function InventorySettingsView(props: InventorySettingsProps) {
       </Grid>
       <Text size="2">
         <Flex direction="column" gap="2">
-          Description
+          {t("description")}
           <MarkdownEditor
             markdown={data.description}
             onChange={(description) => setData((p) => ({ ...p, description }))}

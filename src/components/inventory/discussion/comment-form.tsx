@@ -1,6 +1,7 @@
 "use client";
 import { User } from "@prisma/client";
 import { Avatar, Button, Flex } from "@radix-ui/themes";
+import { useTranslations } from "next-intl";
 
 import dynamic from "next/dynamic";
 import React from "react";
@@ -17,6 +18,7 @@ interface Props {
 
 export function InventoryDiscussionCommentForm(props: Props) {
   const { user, onComment } = props;
+  const t = useTranslations("inventory.discussion");
   const [comment, setCommment] = React.useState("");
   function handleComment() {
     onComment(comment);
@@ -37,12 +39,16 @@ export function InventoryDiscussionCommentForm(props: Props) {
           width="100%"
           style={{ borderBottom: "1px solid var(--gray-3)" }}
         >
-          <Editor markdown={comment} onChange={setCommment} />
+          <Editor
+            markdown={comment}
+            onChange={setCommment}
+            placeholder={t("placeholder")}
+          />
         </Flex>
       </Flex>
       <Flex justify="end">
         <Button disabled={!comment} onClick={handleComment}>
-          Comment
+          {t("comment")}
         </Button>
       </Flex>
     </Flex>

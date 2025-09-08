@@ -23,8 +23,9 @@ import React from "react";
 export function BasicMarkdownEditor(props: {
   markdown: string;
   onChange(markdown: string): void;
+  placeholder?: string;
 }) {
-  const { markdown, onChange } = props;
+  const { markdown, onChange, placeholder } = props;
   const ref = React.useRef<MDXEditorMethods | null>(null);
   React.useEffect(() => {
     if (ref.current) {
@@ -34,7 +35,7 @@ export function BasicMarkdownEditor(props: {
   return (
     <MDXEditor
       ref={ref}
-      placeholder="Add a comment..."
+      placeholder={placeholder}
       markdown={markdown}
       onChange={onChange}
       plugins={[markdownShortcutPlugin()]}

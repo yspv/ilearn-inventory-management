@@ -68,7 +68,9 @@ export function InventoryCustomIdView(props: Props) {
           <Callout.Text>{errorMessage(err.message)}</Callout.Text>
         </Callout.Root>
       ))}
-      <Heading size="4">Example: {example}</Heading>
+      <Heading size="4">
+        {t("example")}: {example}
+      </Heading>
       <Grid columns={{ initial: "1", lg: "2" }} gap="6" mt="2">
         <Flex direction="column" gap="6">
           <SortableList

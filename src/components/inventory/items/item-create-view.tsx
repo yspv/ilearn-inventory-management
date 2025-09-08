@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { schema } from "./schema";
 import { Button, Flex, Grid } from "@radix-ui/themes";
 import { InventoryItemForm } from "./form";
+import { useTranslations } from "next-intl";
 
 interface Props {
   fields: InventoryField[];
@@ -13,6 +14,7 @@ interface Props {
 
 export function InventoryItemCreateView(props: Props) {
   const { fields, onSave } = props;
+  const label = useTranslations("labels");
   const { formState, handleSubmit, register, control } = useForm({
     defaultValues: {
       num1: 0,
@@ -36,7 +38,7 @@ export function InventoryItemCreateView(props: Props) {
           />
           <Flex direction="column" mt="6">
             <Button disabled={formState.isSubmitSuccessful} type="submit">
-              Save
+              {label("save")}
             </Button>
           </Flex>
         </Flex>
