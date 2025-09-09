@@ -15,13 +15,13 @@ const fixedSchema = z.object({
 
 const bit32Schema = z.object({
   type: z.literal("bit32"),
-  format: z.string().regex(/\[D:9|X:7\]/, "bit32"),
+  format: z.string().regex(/\[D:10|X:8\]/, "bit32"),
   order: z.number().int(),
 });
 
 const bit20Schema = z.object({
   type: z.literal("bit20"),
-  format: z.string().regex(/\[D:6|X:5\]/, "bit20"),
+  format: z.string().regex(/\[D:7|X:5\]/, "bit20"),
   order: z.number().int(),
 });
 
