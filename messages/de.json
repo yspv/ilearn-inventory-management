@@ -20,6 +20,7 @@
     }
   },
   "sign-in": {
+    "profile": "Profil",
     "title": "Anmelden",
     "option": "Mit {provider} anmelden",
     "hello": "Hallo, {name}",
@@ -77,6 +78,10 @@
     "TOO_MANY_REQUESTS": {
       "title": "Zu viele Anfragen",
       "description": "Sie senden zu viele Anfragen. Bitte warten Sie einen Moment."
+    },
+    "SERVICE_UNAVAILABLE": {
+      "title": "Dienst nicht verfügbar",
+      "description": "Der Server ist vorübergehend nicht erreichbar, da er gewartet wird oder überlastet ist."
     },
     "ERROR": {
       "title": "Fehler",

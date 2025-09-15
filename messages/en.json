@@ -9,8 +9,8 @@
       "updatedAt": "Last modified"
     },
     "filters": {
-      "me": "Owned by me",
-      "notMe": "Owned by not me",
+      "me": "Owned by {name}",
+      "notMe": "Owned by not {name}",
       "anyone": "Owned by anyone"
     },
     "sorting": {
@@ -20,6 +20,7 @@
     }
   },
   "sign-in": {
+    "profile": "Profile",
     "title": "Sign In",
     "option": "Sign In with {provider}",
     "hello": "Hi, {name}",
@@ -77,6 +78,10 @@
     "TOO_MANY_REQUESTS": {
       "title": "Slow down",
       "description": "You’re sending too many requests. Please wait a moment."
+    },
+    "SERVICE_UNAVAILABLE": {
+      "title": "Service Unavailable",
+      "description": "The server is temporarily unavailable"
     },
     "ERROR": {
       "title": "Error",
