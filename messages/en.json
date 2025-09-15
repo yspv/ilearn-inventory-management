@@ -4,6 +4,13 @@
     "top-inventories": "Top Inventories"
   },
   "profile": {
+    "salesforce": {
+      "title": "Integrating Salesforce",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "save": "Save"
+    },
     "columns": {
       "title": "Title",
       "updatedAt": "Last modified"

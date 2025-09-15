@@ -4,6 +4,13 @@
     "top-inventories": "Top-Inventare"
   },
   "profile": {
+    "salesforce": {
+      "title": "Salesforce integrieren",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "Email",
+      "save": "Speichern"
+    },
     "columns": {
       "title": "Titel",
       "updatedAt": "Zuletzt geändert"

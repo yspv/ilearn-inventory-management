@@ -1,6 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Dialog, Flex, Text, TextField } from "@radix-ui/themes";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -16,6 +17,7 @@ interface Props {
 
 export function SalesforceDialog(props: Props) {
   const { onSubmit } = props;
+  const t = useTranslations("profile.salesforce");
   const { handleSubmit, register } = useForm({
     defaultValues: { firstName: "", lastName: "", email: "" },
     resolver: zodResolver(schema),
@@ -23,7 +25,7 @@ export function SalesforceDialog(props: Props) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button variant="outline">Saleforce</Button>
+        <Button variant="outline">{t("title")}</Button>
       </Dialog.Trigger>
       <Dialog.Content
         aria-describedby="none"
@@ -31,23 +33,23 @@ export function SalesforceDialog(props: Props) {
         width={{ initial: "100%", lg: "30%" }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Dialog.Title>Integrate Salesforce</Dialog.Title>
+          <Dialog.Title>{t("title")}</Dialog.Title>
           <Flex direction="column">
             <Text size="2" weight="medium" mb="2">
-              First Name
+              {t("firstName")}
             </Text>
             <TextField.Root {...register("firstName")} />
             <Text size="2" weight="medium" mt="4" mb="2">
-              Last Name
+              {t("lastName")}
             </Text>
             <TextField.Root {...register("lastName")} />
             <Text size="2" weight="medium" mb="2" mt="4">
-              Email
+              {t("email")}
             </Text>
             <TextField.Root {...register("email")} />
             <Dialog.Close>
               <Button mt="6" type="submit">
-                Save
+                {t("save")}
               </Button>
             </Dialog.Close>
           </Flex>
