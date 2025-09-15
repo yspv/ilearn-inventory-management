@@ -8,6 +8,7 @@ import { ProfileInventorySorter } from "./inventory-sorter";
 
 export const columns = (
   t: (key: string) => string,
+  isOwner: boolean,
 ): ColumnDef<Inventory & { owner: User }>[] => [
   {
     accessorKey: "title",
@@ -31,7 +32,7 @@ export const columns = (
     accessorKey: "owner",
     header: ({ column }) => (
       <Flex justify="end">
-        <ProfileInventoryFilter column={column} />
+        <ProfileInventoryFilter column={column} isOwner={isOwner} />
       </Flex>
     ),
     cell: ({ row }) => (

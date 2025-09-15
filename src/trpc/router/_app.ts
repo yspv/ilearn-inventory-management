@@ -8,6 +8,7 @@ import { inventoryItemRouter } from "./inventory-item/router";
 import { inventoryCommentRouter } from "./inventory-comment/router";
 import { inventoryUserRouter } from "./inventory-user/router";
 import { inventoryItemLikeRouter } from "./inventory-item-like/router";
+import { salesforceRouter } from "./salesforce/router";
 
 export const appRouter = router({
   user: userRouter,
@@ -18,6 +19,7 @@ export const appRouter = router({
   inventoryComment: inventoryCommentRouter,
   inventoryUser: inventoryUserRouter,
   inventoryItemLike: inventoryItemLikeRouter,
+  salesforce: salesforceRouter,
 });
 export type AppRouter = typeof appRouter;
 export type AppRouterInput = inferRouterInputs<AppRouter>;
